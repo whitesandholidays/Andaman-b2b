@@ -1,0 +1,1230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Andaman B2B Price Calculator by Whitesand Holidays</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+:root{
+  --ink:#10242C; --muted:#46616A; --line:#D5E2E4; --paper:#FFFFFF; --ground:#EEF4F4;
+  --lagoon:#0B6E78; --lagoon-soft:#E1F0F0; --sun:#D9482B; --sand:#FFF6E8; --amber:#FFF1CC;
+  --display:"Bricolage Grotesque","Segoe UI",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font:15px/1.5 var(--body)}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+.num{font-variant-numeric:tabular-nums}
+button,select,input,textarea{font:inherit;color:inherit}
+
+.top{background:linear-gradient(120deg,#0B4F57,#0B6E78);color:#fff;padding:16px 20px}
+.top-in{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:flex-end;justify-content:space-between}
+.top h1{font-size:24px}
+.top p{margin:2px 0 0;opacity:.92;font-size:14px}
+.status{font-size:13px;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 12px}
+.status.bad{background:#FDE7E2;color:#8A2410}
+.status .refresh{color:inherit;text-decoration:underline;font-size:13px;padding:0;background:none;border:0;cursor:pointer}
+body.locked .panel,body.locked .how{display:none}
+body.locked .wrap{grid-template-columns:1fr;max-width:560px}
+.gate h2{margin-bottom:8px}.gate p{margin:0 0 12px}
+.coderow{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
+.coderow input::placeholder{text-transform:none;letter-spacing:0}
+.coderow input{flex:1;min-width:180px;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font-size:16px;text-transform:uppercase;letter-spacing:.04em}
+.how{max-width:1200px;margin:14px auto 0;padding:0 16px}
+.how ol{margin:0;padding:10px 14px 10px 32px;background:var(--paper);border:1px solid var(--line);border-radius:8px;font-size:14px;display:flex;flex-wrap:wrap;gap:4px 28px}
+
+.wrap{max-width:1200px;margin:14px auto 40px;padding:0 16px;display:grid;grid-template-columns:330px 1fr;gap:18px;align-items:start}
+@media (max-width:900px){.wrap{grid-template-columns:1fr}}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;position:sticky;top:12px;display:grid;gap:14px;max-height:calc(100vh - 24px);overflow:auto}
+@media (max-width:900px){.panel{position:static;max-height:none}}
+.panel h2{font-size:17px}
+.field{display:grid;gap:6px}
+.field>label,.lbl{font-weight:700;font-size:14px}
+small,.small{color:var(--muted);font-size:12.5px;line-height:1.4}
+select,input[type=text],input[type=number],input[type=date],textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff}
+textarea{min-height:110px;resize:vertical;font-size:13.5px;line-height:1.45}
+.cnt{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cnt>span{font-size:14px;line-height:1.25}
+.step{display:flex;align-items:center;border:1px solid var(--line);border-radius:6px;overflow:hidden;flex-shrink:0}
+.step button{width:32px;height:32px;border:0;background:var(--lagoon-soft);color:var(--lagoon);font-weight:700;font-size:18px;cursor:pointer}
+.step input{width:40px;height:32px;border:0;text-align:center;font-weight:700;padding:0}
+.kids{display:grid;gap:6px}
+.kid{display:flex;align-items:center;gap:8px;font-size:14px}
+.kid select{width:auto;flex:1}
+.kid button,.x{border:0;background:#F3E3DF;color:#8A2410;border-radius:6px;width:30px;height:30px;cursor:pointer;font-weight:700}
+.add{border:1px dashed var(--lagoon);background:#fff;color:var(--lagoon);border-radius:6px;padding:7px 10px;cursor:pointer;font-weight:700;font-size:14px}
+.hnote{margin-top:14px;padding:12px 14px;border-left:4px solid #0B5E68;background:#F3F8F8;border-radius:8px;font-size:14px;line-height:1.55;color:#14302C}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:14px;cursor:pointer}
+.chk input{margin-top:4px}
+.radio{display:grid;gap:6px}
+.sep{border:0;border-top:1px solid var(--line);margin:0}
+.auto{background:var(--amber);border:1px solid #F0D58A;border-radius:8px;padding:9px 11px;font-size:13.5px;line-height:1.4}
+.pk{font-size:13px;background:#FFF1CC;border-radius:6px;padding:5px 9px;color:#5C4200}
+.check{margin-top:14px;border:2px solid var(--sun);border-radius:10px;padding:12px 16px;background:#FFF8F5}
+.check b:first-child{display:block;font-family:var(--display);font-size:16px;color:var(--sun);margin-bottom:6px}
+.check ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px}
+.check li{display:flex;gap:10px;align-items:flex-start}
+.check li::before{content:"";flex:0 0 16px;height:16px;border:2px solid var(--sun);border-radius:3px;margin-top:2px}
+.datebar{background:var(--lagoon-soft);border-radius:8px;padding:8px 12px;font-size:14px;margin-top:10px}
+.auto b{color:#6B4A00}
+.ropts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px;margin:8px 0 4px}
+.roomsbox{border:1px solid #F0D58A;background:#FFFCF3;border-radius:10px;padding:12px 14px;display:grid;gap:8px;margin-bottom:14px}
+.rb-h{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
+.rsteps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px 20px;margin-top:4px}
+.ropt{display:grid;text-align:left;gap:1px;border:1px solid #E5C978;background:#fff;border-radius:6px;padding:7px 10px;cursor:pointer;font-size:13.5px}
+.ropt span{color:var(--muted);font-size:12.5px}
+.ropt.on{border:2px solid var(--sun);background:#FFF8EC}
+.flash{animation:fl 1.2s ease}
+@keyframes fl{0%{box-shadow:0 0 0 0 rgba(217,72,43,.6)}100%{box-shadow:0 0 0 12px rgba(217,72,43,0)}}
+
+.main{display:grid;gap:16px;min-width:0}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px}
+.card h2{font-size:20px;margin-bottom:4px}
+.eyebrow{font:700 11.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--lagoon)}
+.lead{color:var(--muted);margin:2px 0 12px;font-size:14.5px}
+.summary{position:sticky;top:0;z-index:5;background:var(--ink);color:#fff;border-radius:10px;padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.summary .chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:4px 12px;font-size:14px}
+.summary .chip b{color:#FFD9A0}
+.summary .t{font-weight:700;margin-right:4px}
+.facts{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--muted)}
+.facts b{color:var(--ink)}
+
+.days{display:grid;gap:10px;margin-top:12px}
+.day{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.day-h{display:flex;gap:8px;align-items:center}
+.day-h b{font-family:var(--display);color:var(--lagoon);white-space:nowrap}
+.day-h input{flex:1;min-width:0;font-weight:700;border-color:transparent;background:transparent;padding:4px 6px}
+.day-h input:hover,.day-h input:focus{border-color:var(--line);background:#fff}
+.day ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+.day li{display:flex;align-items:center;gap:8px;font-size:14px}
+.day li::before{content:"•";color:var(--lagoon);font-weight:700}
+.day li span{flex:1}
+.day li .x{width:24px;height:24px;font-size:13px;opacity:.75}
+.day li .x:hover{opacity:1}
+.day .addrow{display:flex;gap:6px;margin-top:6px}
+.day .addrow input{font-size:13.5px;padding:6px 8px}
+.day .addrow button{border:1px solid var(--lagoon);background:var(--lagoon-soft);color:var(--lagoon);border-radius:6px;padding:0 12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.dview{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px 16px;margin-top:10px}
+.dview div{font-size:14px}
+.dview b{font-family:var(--display);color:var(--lagoon)}
+.dview p{margin:2px 0 0;color:#24414A;font-size:13.5px}
+.edited{background:#FDE7E2;color:#8A2410;border-radius:8px;padding:10px 14px;font-size:14px;margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.edited button{border:1px solid #8A2410;background:#fff;color:#8A2410;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700}
+
+.prices{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:620px){.prices{grid-template-columns:1fr}}
+.pc{border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px;background:#FAFCFC}
+.pc .sub{font-size:14px;color:#24414A;font-weight:600;margin-top:-2px}
+
+.pc.cab{background:var(--sand);border-color:#F1DEC0}
+.pc h3{font-size:16px}
+.pc .price{font-family:var(--display);font-size:28px;font-weight:700;color:var(--sun);line-height:1.1}
+.pc .for{font-size:13px;color:var(--muted)}
+.pc .inc{font:700 12px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:4px}
+.pc ul{margin:0;padding-left:18px;font-size:13.5px;color:#24414A;display:grid;gap:2px}
+.pc ul.fer{list-style:none;padding:8px 10px;background:var(--lagoon-soft);border-radius:6px}
+.pc .no{color:#8A2410;font-weight:700}
+.pc .nolist{display:grid;gap:6px}
+.pc .hl{background:#FDE7DF;border-left:4px solid #C2410C;color:#7A1F0A;font-weight:700;border-radius:6px;padding:7px 10px;font-size:14px}
+.pc .fbox{padding:2px 0 4px}
+.qstep{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;margin-top:14px}
+.qn{width:26px;height:26px;border-radius:50%;background:var(--lagoon);color:#fff;font-weight:700;display:grid;place-items:center;font-size:14px}
+.qprev{margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#F7FBFB;font-size:14px}
+.qprev ul{margin:4px 0 0;padding-left:18px}
+.qerr{margin-top:10px;padding:9px 12px;border-radius:8px;background:#FDE7DF;border-left:4px solid #C2410C;color:#7A1F0A;font-weight:700;font-size:14px}
+#qOverlay{position:fixed;inset:0;z-index:999;background:#0F2A2E;display:none;flex-direction:column}
+#qOverlay .qo-bar{display:flex;gap:10px;padding:10px 14px;flex-wrap:wrap}
+#qOverlay iframe{flex:1;border:0;background:#fff;width:100%}
+.xlug{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:14px}
+.xlug .stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.xlug .stepper button{border:0;background:#E6F2F2;color:var(--lagoon);font-weight:700;width:32px;height:32px;cursor:pointer;font-size:16px}
+.xlug .stepper span{min-width:32px;text-align:center;font-weight:700}
+input.bad{border-color:#C2410C!important;background:#FFF4F0;box-shadow:0 0 0 3px rgba(194,65,12,.15)}
+.addrow select{width:100%}
+.custrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.custrow input{flex:1;min-width:140px}
+.custrow small{flex-basis:100%;color:var(--muted)}
+.addtag{font-style:normal;font-size:11px;font-weight:700;color:#0B5E68;background:#E2F1F1;border-radius:4px;padding:1px 5px;margin-left:4px}
+.tnote{margin:6px 0 0;padding:7px 10px;border-radius:6px;background:#FFF4E0;border-left:4px solid #D97706;font-size:13.5px;color:#5A3A00}
+.checkfirst{margin:10px 0 4px;padding:10px 12px;border-radius:8px;background:#FFF4E0;border:1px solid #F3D9A8;font-size:14px;line-height:1.5;color:#4A3200}
+.farw{margin-top:6px;font-size:13.5px;padding:8px 12px}
+.sdbox{margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#F7FBFB}
+.sdbox .chk{align-items:flex-start}
+.sdbox p{margin:8px 0 0;font-size:14px}
+.sdbox .sdwarn{padding:8px 10px;border-left:3px solid #D9902F;background:#FFF7EA;border-radius:4px}
+.copied{color:#0B5E68;font-weight:700;margin-left:8px}
+.warn{background:#FDE7E2;color:#8A2410;border-radius:8px;padding:10px 14px;font-size:14px}
+.note{background:var(--lagoon-soft);border-radius:8px;padding:10px 14px;font-size:14px;color:#1F4A50}
+.note ol{margin:4px 0 0;padding-left:20px;display:grid;gap:3px}
+
+.cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.cats button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:600;font-size:14px}
+.cats button.on{background:var(--lagoon);border-color:var(--lagoon);color:#fff}
+.isl{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:6px;margin-bottom:8px}
+.isl-h{display:flex;justify-content:space-between;gap:8px;font:700 13px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--lagoon)}
+.isl-r{font-size:13.5px;color:var(--muted)}
+.htable{width:100%;border-collapse:collapse;margin-top:8px;font-size:14.5px}
+.htable td{padding:6px 0;border-bottom:1px solid var(--line)}
+.htable td:last-child{text-align:right;font-weight:700}
+.htable tr.tot td{border-bottom:0;border-top:2px solid var(--ink);font-size:17px;font-family:var(--display)}
+.sums{display:grid;gap:8px;margin-top:14px}
+.sum{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;border:1px solid #BFDCDD;background:var(--lagoon-soft);border-radius:8px;padding:9px 12px;font-size:14px}
+.sum .t{grid-row:span 2;font-family:var(--display);font-size:19px;font-weight:700;white-space:nowrap}
+.sum .t i{font-style:normal;color:var(--sun);margin-right:4px}
+.pl{color:var(--sun);font-weight:800;font-style:normal}
+.addons{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.addon{border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px}
+.addon small{display:block;margin:2px 0 0 24px}
+.alerts{display:grid;gap:6px;margin-top:12px}
+
+.quote .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:620px){.quote .grid2{grid-template-columns:1fr}}
+.imgbox{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.imgbox img{max-height:48px;max-width:160px;border:1px solid var(--line);border-radius:6px;padding:3px;background:#fff}
+.imgbox .cov{max-height:60px;max-width:140px;object-fit:cover;padding:0}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{border:1px solid var(--lagoon);background:var(--lagoon);color:#fff;border-radius:8px;padding:11px 18px;font-weight:700;font-size:15px;cursor:pointer}
+.btn.sec{background:#fff;color:var(--lagoon)}
+.link{border:0;background:none;color:var(--lagoon);text-decoration:underline;cursor:pointer;padding:0;font-size:13px}
+details.more summary{cursor:pointer;font-weight:700;color:var(--lagoon);padding:6px 0}
+.foot{max-width:1200px;margin:0 auto 30px;padding:0 16px;color:var(--muted);font-size:13px}
+.helpbar{max-width:1180px;margin:12px auto 0;padding:14px 18px;border-radius:10px;background:#fff;border:1px solid var(--line);border-left:5px solid #0B5E68;display:flex;gap:12px 22px;align-items:center;flex-wrap:wrap}
+.helpbar .hb-l{display:grid;gap:1px;min-width:190px}
+.helpbar .hb-k{font:700 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:#0B5E68}
+.helpbar .hn{font-family:var(--display);font-weight:700;font-size:22px;color:#10242C;letter-spacing:.01em;white-space:nowrap}
+.helpbar .hb-s{font-size:12.5px;color:var(--muted)}
+.helpbar p{margin:0;flex:1;min-width:260px;font-size:14.5px;line-height:1.55;color:#24414A}
+@media (max-width:620px){.helpbar{margin:10px 16px 0}}
+h1 .by{font-weight:500;font-size:.62em;opacity:.85;white-space:nowrap}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div>
+      <h1>Andaman B2B Price Calculator <span class="by">by Whitesand Holidays</span></h1>
+      <p id="season">Loading prices…</p>
+    </div>
+    <span class="status" id="status">Connecting…</span>
+  </div>
+</header>
+
+<div class="helpbar hide" id="helpbar"></div>
+
+<div class="how">
+  <ol>
+    <li>Choose the itinerary and your guests on the left.</li>
+    <li>See the cab, logistics and hotel prices for that group (taxes included).</li>
+    <li>Scroll down to <b>Make your quote</b>: add your logo and markup, then make the PDF.</li>
+  </ol>
+</div>
+
+<div class="wrap">
+  <aside class="panel" aria-label="Trip details">
+    <h2>Trip details</h2>
+    <div class="field">
+      <label for="it">1. Itinerary</label>
+      <select id="it"></select>
+      <label for="arr" style="margin-top:6px">Arrival date <small>(optional, for peak dates and gala dinners)</small></label>
+      <input type="date" id="arr" aria-label="Arrival date">
+    </div>
+    <div class="field">
+      <span class="lbl">2. Guests</span>
+      <div class="cnt"><span>Adults <small>(12 years +)</small></span><div class="step" data-k="ad"><button type="button" data-d="-1" aria-label="Fewer adults">−</button><input id="ad" value="2" inputmode="numeric" aria-label="Adults"><button type="button" data-d="1" aria-label="More adults">+</button></div></div>
+      <div class="kids" id="kids"></div>
+      <button type="button" class="add" id="addKid">+ Add a child (2 to 11 years)</button>
+      <div class="cnt"><span>Infants <small>(below 2, free)</small></span><div class="step" data-k="c0"><button type="button" data-d="-1" aria-label="Fewer infants">−</button><input id="c0" value="0" inputmode="numeric" aria-label="Infants"><button type="button" data-d="1" aria-label="More infants">+</button></div></div>
+    </div>
+    <hr class="sep">
+    <div class="field">
+      <span class="lbl">3. Vehicle</span>
+      <div class="auto" id="vehBox"></div>
+      <div class="radio" id="vehOpts"></div>
+      <div id="xLugBox"></div>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+    <div class="card" id="loading"><p>Loading the latest B2B prices… This needs an internet connection.</p></div>
+  </main>
+</div>
+<p class="foot" id="foot"></p>
+
+<script>
+const FEED_URL = "https://script.google.com/macros/s/AKfycbySkjDyP7SUeOfz8vybuI0nmmv_zg11Hins4-1MOCLm-3ekuGcPYyYW2qHqxmG5DWtU/exec";
+const BUILDER_HTML = "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Andaman B2B Quote Builder<\/title>\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap\">\n<style>\n/* Layout: a working strip on top (paste quote code), then the quote itself as an A4-width sheet that prints cleanly. */\n:root{\n  --ink:#10242C;        /* text, headings */\n  --muted:#46616A;      /* secondary text */\n  --line:#D5E2E4;       /* hairlines */\n  --paper:#FFFFFF;      /* sheet */\n  --ground:#EEF4F4;     /* page behind the sheet */\n  --lagoon:#0B6E78;     /* accent: sea */\n  --lagoon-soft:#E1F0F0;\n  --sun:#D9482B;        /* prices */\n  --sand:#FFF6E8;       /* note boxes */\n  --display:\"Bricolage Grotesque\", \"Segoe UI\", Arial, sans-serif;\n  --body:\"Source Sans 3\", \"Segoe UI\", Arial, sans-serif;\n  color-scheme: light;\n}\n*{box-sizing:border-box}\nhtml,body{margin:0}\nbody{background:var(--ground);color:var(--ink);font:15px/1.5 var(--body);padding-block:20px;padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}\nh1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}\n.num{font-variant-numeric:tabular-nums}\n\n/* ---------- working strip ---------- */\n.tools{max-width:860px;margin:0 auto 18px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:10px}\n.tools-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}\n.tools-head strong{font-family:var(--display);font-size:17px}\n.tools-head span{color:var(--muted);font-size:13px}\n.tools textarea{width:100%;min-height:140px;font:12px/1.45 Consolas, \"Courier New\", monospace;border:1px solid var(--line);border-radius:6px;padding:10px;resize:vertical;color:var(--ink);background:#FBFDFD}\n.whypos{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}\n.whypos select{font:14px var(--body);padding:6px 8px;border:1px solid var(--line);border-radius:6px;color:var(--ink);background:var(--paper)}\n.btns{display:flex;flex-wrap:wrap;gap:8px}\nbutton{font:600 14px var(--body);border-radius:6px;padding:8px 14px;cursor:pointer;border:1px solid var(--lagoon);background:var(--paper);color:var(--lagoon)}\nbutton.primary{background:var(--lagoon);color:#fff}\nbutton:focus-visible{outline:3px solid var(--sun);outline-offset:2px}\n.msg{font-size:13px;color:var(--muted)}\n.msg.err{color:var(--sun);font-weight:600}\n\n/* ---------- the quote sheet ---------- */\n.sheet{max-width:860px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}\n.cover{position:relative;color:#fff;padding:34px 32px 28px;background:\n  radial-gradient(120% 90% at 100% 0%, rgba(255,255,255,.18), transparent 55%),\n  linear-gradient(160deg,#0B6E78 0%,#0A4C5C 55%,#10242C 100%);background-size:cover;background-position:center}\n.cover.has-img{background-blend-mode:normal}\n.cover .badge{display:inline-block;font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:4px 10px;border-radius:99px}\n.cover h1{font-size:clamp(26px,4.4vw,38px);line-height:1.1;margin:12px 0 6px}\n.cover .route{font-size:16px;opacity:.92}\n.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:22px}\n.facts div{border-top:1px solid rgba(255,255,255,.35);padding-top:8px}\n.facts dt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}\n.facts dd{margin:2px 0 0;font-weight:600}\n.waves{display:block;width:100%;height:18px;margin-top:22px;opacity:.5}\n\n.sec{padding:26px 32px;border-top:1px solid var(--line)}\n.sec h2{font-size:21px;margin-bottom:4px}\n.sec .lead{color:var(--muted);margin:0 0 16px;max-width:65ch}\n.eyebrow{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--lagoon);margin-bottom:6px}\n\n.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}\n.steps li{background:var(--lagoon-soft);border-radius:8px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}\n.steps b.n{font-family:var(--display);font-size:22px;color:var(--lagoon);line-height:1}\n.steps p{margin:0;font-size:14px}\n\n.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px}\n.opt{border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:8px;align-content:start}\n.opt h3{font-size:16px}\n.opt .tag{font-size:14px;color:var(--lagoon);font-weight:700;padding-top:4px;border-top:1px solid var(--line)}\n.opt .tc{font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:-6px}\n.opt .pp strong{color:var(--ink)}\n.opt .price{font-family:var(--display);font-size:26px;color:var(--sun);line-height:1.1}\n.opt .pp{font-size:13px;color:var(--muted)}\n.pkgs{display:grid;gap:14px;margin-top:10px}\n.pkcard .price{font-size:30px}\n.pk-h{font:700 12px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:6px}\n.pk-h span{text-transform:none;letter-spacing:0;font-weight:600}\n.pk-hot{margin:0;display:grid;gap:6px;font-size:14px}\n.pk-hot>div{background:#FAFCFC;border:1px solid var(--line);border-radius:6px;padding:7px 12px}\n.pk-hot dt{color:var(--lagoon);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em}\n.pk-hot dd{margin:2px 0 0}\n.pk-hot .alt{color:var(--muted);font-size:12px}\n@media print{.pkcard{break-inside:avoid}}\n.legs{list-style:none;margin:0;padding:0;font-size:13px;display:grid;gap:4px}\n.legs li{display:grid;gap:0;padding-top:5px;border-top:1px dashed var(--line)}\n.legs .leg{color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase}\n.incl-head{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--lagoon);margin:0 0 8px}\n.chips{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:6px}\n.chips li{background:var(--lagoon-soft);color:var(--ink);border-radius:99px;padding:4px 11px;font-size:13px;font-weight:600}\n.chips li::before{content:\"\u2713 \";color:var(--lagoon)}\n.opt .note{font-size:12px;background:var(--sand);border-radius:4px;padding:4px 6px}\n\n.hotels{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;align-items:stretch}\n.hpair{display:grid;grid-template-rows:1fr auto;gap:8px;break-inside:avoid;min-width:0}\n.hpair>*{min-width:0}\n.hcat{border:1px solid var(--line);border-radius:8px;padding:14px}\n.hcat header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}\n.hcat h3{font-size:17px}\n.hcat .hprice{font-family:var(--display);font-size:20px;color:var(--ink);text-align:right;line-height:1.1}\n.hcat .hprice small{display:block;font-family:var(--body);font-size:11px;font-weight:600;color:var(--muted);margin-top:2px}\n.hcat .basis{font-size:12px;color:var(--muted);margin:-4px 0 8px}\n.hcat dl{margin:0;display:grid;gap:6px;font-size:14px}\n.hx-head{font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}\n.hcat dt{display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--lagoon)}\n.hcat dd{margin:0}\n\n.table-wrap{overflow-x:auto}\ntable.matrix{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}\n.matrix th,.matrix td{border-bottom:1px solid var(--line);padding:9px 8px;text-align:right}\n.matrix td{white-space:nowrap}\n.matrix thead th{vertical-align:bottom}\n.matrix th:first-child,.matrix td:first-child{text-align:left}\n.matrix thead th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}\n.matrix td small{display:block;color:var(--muted);font-size:12px}\n.matrix td.lo{color:var(--lagoon);font-weight:700}\n.hcat{break-inside:avoid;display:flex;flex-direction:column}\n.hmore{margin-top:auto;padding-top:6px}\n.hbody{display:grid;grid-template-columns:1fr 1.15fr;gap:18px;align-items:start}\n.htot{background:var(--lagoon-soft);border:1px solid #BFDCDD;border-radius:8px;padding:10px 14px}\n.htot-s{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink);margin-bottom:2px}\n.htot-h{font:700 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--lagoon);margin-bottom:2px}\n.htot .cl{font-size:13.5px;align-items:center}\n.htot .c-a .nw{display:block;white-space:normal}\n.htot .c-a{flex:1;min-width:0}\n.htot .c-t{flex-shrink:0}\n.nw{white-space:nowrap}\n.rm{font-size:12px;color:var(--muted);font-weight:600}\n.htot .cl:first-of-type{border-top:0}\n@media (max-width:700px){.hbody{grid-template-columns:1fr}}\n@media print{.htot{-webkit-print-color-adjust:exact;print-color-adjust:exact}}\n.combos{display:grid;gap:14px}\n.combo{border:1px solid var(--line);border-radius:8px;padding:12px 14px;break-inside:avoid}\n.combo h3{margin:0 0 6px;font-size:16px}\n.combo h3 span{font-weight:500;color:var(--muted);font-size:13px}\n.cl{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-top:1px dashed var(--line);font-size:14.5px}\n.cl .c-a b{font-weight:600}\n.cl .c-t{font-weight:800;white-space:nowrap;font-size:15.5px}\n.cl.only .c-a,.cl.only .c-t{color:var(--lagoon);font-weight:700}\n.pl,.eq{font-style:normal;font-weight:800;color:var(--sun);font-size:17px;padding:0 3px}\n@media (max-width:560px){.cl{flex-direction:column;gap:2px}}\n.matrix th.mxh{text-transform:none;letter-spacing:0;color:var(--ink);vertical-align:bottom;line-height:1.15}\n.matrix th.mxh span{display:block}\n.mx-l{font-size:12px;color:var(--muted);font-weight:600}\n.mx-plus{display:inline-block!important;margin:3px 0;width:22px;height:22px;line-height:22px;border-radius:50%;background:var(--sun);color:#fff;font-size:17px;font-weight:800;text-align:center}\n.mx-h{font-family:var(--display);font-size:15px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.02em}\n.mx-h.lo{color:var(--lagoon)}\n.mx-n{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:2px}\n\n.notebox{background:var(--sand);border:1px solid #F1DDBD;border-radius:8px;padding:14px 16px;max-width:none}\n.subh{font-size:17px;margin:22px 0 8px}\n.morenote{margin-top:10px;color:#24414A}\n.gtk{margin-top:14px;background:#F4F6F7;border-radius:8px;padding:12px 16px}\n.gtk-h{font:700 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--lagoon);margin-bottom:6px}\n.gtk ul{margin:0;padding-left:18px;display:grid;gap:8px;font-size:14.5px;line-height:1.5}\n.exh{font:700 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--lagoon);margin:20px 0 8px}\n.exs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}\n.exc{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:6px;break-inside:avoid}\n.exc-h{font-family:var(--display);font-weight:700;font-size:15.5px;color:var(--ink)}\n.exc-h span{color:var(--lagoon)}\n.exc-c{font-size:14px;color:#24414A;line-height:1.5}\n.exc-t{font-size:14px;font-weight:600;border-top:1px dashed var(--line);padding-top:6px}\n.exc-t b{font-size:16px;font-weight:800;color:var(--ink);margin-left:4px}\n.exc-n{font-size:13px;color:var(--muted);line-height:1.45}\n.ask{margin:14px 0 0;font-size:14.5px;font-weight:600;background:var(--sand);border-radius:8px;padding:10px 14px}\n.terms{line-height:1.55}\n.terms li{margin-bottom:3px}\n\n.hx{list-style:none;margin:0;padding:8px 10px;background:#F4F6F7;border:1px dashed #C9D3D6;border-radius:6px;display:grid;gap:3px;font-size:13px}\n.hcat dd.rate{font-size:12px;color:var(--muted)}\n.hx-eg{font-size:12px;color:#24414A;margin:6px 0 0}\n.hx li{display:flex;justify-content:space-between;gap:10px}\n.hx b{white-space:nowrap}\n.guide{margin:16px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px 18px;font-size:14px}\n.guide dt{font-weight:700;color:var(--lagoon)}\n.guide dd{margin:0;color:#24414A}\n.calcslot .notebox.calc{margin-top:0;align-self:start}\n.notebox.calc{margin-top:16px;background:var(--lagoon-soft);border-color:#BFDCDE}\n.notebox.calc h3{color:var(--lagoon)}\n.notebox.own{margin-top:16px}\n.why-band{background:linear-gradient(160deg,#0B6E78 0%,#0A4C5C 60%,#10242C 100%);color:#fff;border-top:0}\n.why-band h2{color:#fff;margin-bottom:16px}\n.why-band .eyebrow{color:#BFE3E5}\n.why-band .why div{border-top-color:rgba(255,255,255,.5)}\n.why-band .why p{color:#E3F1F2}\n.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}\n.why div{border-top:3px solid var(--lagoon);padding-top:10px}\n.why h3{font-size:16px;margin-bottom:4px}\n.why p{margin:0;font-size:14px;color:#24414A}\n.notebox h3{font-size:16px;margin-bottom:6px}\n.notebox ol{margin:0;padding-left:20px;display:grid;gap:4px}\n\n.days{display:grid;gap:14px}\n.day{display:grid;grid-template-columns:72px 1fr;gap:14px}\n.day .dn{font-family:var(--display);color:var(--lagoon)}\n.day .dn b{display:block;font-size:22px;line-height:1}\n.day .dn span{font-size:12px;color:var(--muted)}\n.day h3{font-size:16px;margin-bottom:4px}\n.day ul{margin:0;padding-left:18px;color:#24414A;font-size:14px}\n\n.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}\n.list{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:14px}\n.list li{display:grid;grid-template-columns:18px 1fr;gap:6px}\n.list.in li::before{content:\"\u2713\";color:var(--lagoon);font-weight:700}\n.list.out li::before{content:\"\u2715\";color:var(--sun);font-weight:700}\n.terms{margin:0;padding-left:20px;display:grid;gap:5px;font-size:14px}\n.cancel{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}\n.cancel div{border:1px solid var(--line);border-radius:8px;padding:12px 14px}\n.cancel div.peak{border-color:#F0C3B8;background:#FFF4F1}\n.cancel h3{font-size:15px;margin-bottom:6px}\n.foot{padding:16px 32px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}\n\n@media (max-width:560px){\n  .cover,.sec,.foot{padding-left:18px;padding-right:18px}\n  .day{grid-template-columns:52px 1fr}\n}\n@media print{\n  @page{size:A4;margin:12mm}\n  body{background:#fff;padding:0}\n  .tools{display:none}\n  .sheet{border:0;border-radius:0;max-width:none}\n  .cover{-webkit-print-color-adjust:exact;print-color-adjust:exact}\n  .steps li,.chips li,.hx,.notebox,.notebox.calc,.cancel div.peak,.opt .note,.why div,.why-band,.mx-plus,.gtk,.ask{-webkit-print-color-adjust:exact;print-color-adjust:exact}\n  .why div,.steps li,.why-band{break-inside:avoid}\n  h2,h3{break-after:avoid}\n  .sec{break-inside:auto}\n  .sec.why-band{break-inside:avoid;page-break-inside:avoid}\n  .opt,.hcat,.day,.cancel div,.notebox{break-inside:avoid}\n  .table-wrap{overflow:visible}\n  table.matrix{min-width:0}\n  body:not(.phone) .hotsec .lead{margin:4px 0 6px;font-size:13.5px}\n  body:not(.phone) .opt .pp,body:not(.phone) .legs{font-size:13.5px;line-height:1.5}\n  body:not(.phone) .legs .leg{font-size:11.5px}\n  body:not(.phone) .terms{font-size:14px}\n  body.phone .hotels{grid-template-columns:1fr}\n  body.phone .cover,body.phone .sec,body.phone .foot{padding-left:4px;padding-right:4px}\n  body.phone .sec{padding-top:16px;padding-bottom:16px}\n  body.phone .cover{padding:20px 14px}\n  body.phone .sheet{font-size:15px}\n  body.phone .opts,body.phone .why,body.phone .guide,body.phone .steps,body.phone .two,body.phone .cancel{grid-template-columns:1fr!important}\n}\n@media (prefers-reduced-motion:reduce){*{transition:none!important}}\n\n/* hotel blocks: full width, larger text */\n.hotels{grid-template-columns:1fr!important;gap:22px!important}\n.hpair{gap:8px}\n.hcat{padding:16px 18px}\n.hcat h3{font-size:19px}\n.hcat .hprice{font-size:23px}\n.hcat .hprice small{font-size:12px;color:#3E5961}\n.hcat .basis{font-size:13.5px;color:#3E5961;margin:-2px 0 10px}\n.hcat dl{grid-template-columns:1fr;gap:8px;font-size:15px}\n.hcat dl>div{background:#FAFCFC;border:1px solid var(--line);border-radius:6px;padding:8px 12px;display:grid;gap:2px}\n.hcat dt{font-size:13px}\n.hcat dd{color:var(--ink);line-height:1.4}\n.hcat dd.rate{font-size:13.5px;color:#3E5961;display:inline}\n.hcat dd.rate+dd.rate::before{content:\" \u00b7 \"}\n.hcat dl>div{grid-template-columns:1fr}\n.hmore{margin-top:12px}\n.hx{font-size:14px;color:var(--ink)}\n.hx-head{font-size:12px;color:#3E5961}\n.hx-eg{font-size:13px}\n.htot{padding:12px 16px}\n.htot-h{font-size:12px}\n.htot-s{font-size:16.5px;margin-bottom:8px}\n.sums{display:grid;gap:8px}\n.sum{background:#fff;border:1px solid #BFDCDD;border-radius:6px;padding:9px 12px;display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:center;font-size:14.5px;color:var(--ink)}\n.sum>div{display:flex;justify-content:space-between;align-items:baseline;gap:8px}\n.sum .s1 strong{font-weight:700}\n.sum .s1{flex-wrap:wrap}\n.sum .s1 .rm{order:3;flex-basis:100%;white-space:nowrap;margin-top:-2px}\n.sum .s2 span,.sum .s1 strong{white-space:nowrap}\n.sum b{font-weight:700;white-space:nowrap}\n.sum .s3 span{display:none}\n.sum .s3 b{font-size:18px;font-weight:800}\n.sum .s3{gap:6px}\n.sum .s3::before{content:\"=\";color:var(--sun);font-weight:800;font-size:18px}\n@media (max-width:640px){.sum{grid-template-columns:1fr}.sum .s3{border-top:1.5px solid var(--ink);padding-top:5px}.sum .s3 span{display:inline}.sum .s3::before{content:none}}\n.gxs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-top:4px}\n.gx{background:#fff;border:1px solid #BFDCDD;border-radius:6px;padding:10px 12px;display:grid;gap:5px;font-size:14px}\n.gx-h{font-family:var(--display);font-weight:700;font-size:15px}\n.gx-h span{color:var(--lagoon)}\n.gx-r{display:flex;justify-content:space-between;gap:8px;align-items:baseline}\n.gx-r b{white-space:nowrap}\n.gx-t{border-top:1.5px solid var(--ink);padding-top:5px;font-weight:700}\n.gx-t b{font-size:17px;font-weight:800}\n.calcslot{display:block}\n@media print{.hpair{display:block!important;break-inside:avoid!important}.htot{margin-top:8px}.hotsec .lead{font-size:13.5px;margin:4px 0 8px}.sum{padding:6px 12px}.hcat dl>div{padding:6px 12px}}\n@media print{.hcat dl>div,.sum,.gx{-webkit-print-color-adjust:exact;print-color-adjust:exact}}\n.abrand{display:flex;align-items:center;gap:12px;margin:0 0 16px}\n.abrand img{max-height:88px;max-width:280px;background:#fff;border-radius:8px;padding:6px 10px;object-fit:contain}\n.abrand span{font-family:var(--display);font-weight:700;font-size:18px}\n.acontact{font-weight:700;color:var(--ink);font-size:13px;margin-bottom:4px}\n<\/style>\n<\/head>\n<body>\n\n<section class=\"tools\" aria-label=\"Quote code\">\n  <div class=\"tools-head\">\n    <strong>For you only (not in the PDF)<\/strong>\n    <span>Paste the B2B quote from Claude here, press Show quote, then Save as PDF.<\/span>\n  <\/div>\n  <textarea id=\"code\" spellcheck=\"false\" aria-label=\"Quote from Claude\"><\/textarea>\n  <div class=\"whypos\">\n    <label for=\"whypos\">\"Why book with us\" section:<\/label>\n    <select id=\"whypos\">\n      <option value=\"end\" selected>At the end<\/option>\n      <option value=\"top\">At the top<\/option>\n      <option value=\"hide\">Hide<\/option>\n    <\/select>\n  <\/div>\n  <div class=\"whypos\">\n    <label for=\"pdfsize\">PDF size:<\/label>\n    <select id=\"pdfsize\">\n      <option value=\"a4\" selected>A4 (laptop, email and printing)<\/option>\n      <option value=\"phone\">Phone (narrow, for mobile / WhatsApp)<\/option>\n    <\/select>\n  <\/div>\n  <div class=\"btns\">\n    <button class=\"primary\" id=\"render\" type=\"button\">Show quote<\/button>\n    <button id=\"sample\" type=\"button\">Load sample<\/button>\n    <button id=\"print\" type=\"button\">Save as PDF<\/button>\n  <\/div>\n  <div class=\"msg\" id=\"msg\" role=\"status\"><\/div>\n<\/section>\n\n<main class=\"sheet\" id=\"sheet\"><\/main>\n\n<script>\nconst SAMPLE_TEXT = \"TITLE: 5 Nights 6 Days \u00b7 Exotic Andaman\\nROUTE: Port Blair \u2192 Havelock Island \u2192 Neil Island\\nSTAY: Port Blair 2 nights \u00b7 Havelock 2 nights \u00b7 Neil 1 night\\nNIGHTS: 5 nights\\nGROUP EXAMPLE: 3 people, Logistics package Option 1 + Budget hotels (1 room + 1 extra mattress): \u20b923,142 (logistics for 3 people) + \u20b915,800 (hotel) = \u20b938,942 total B2B package cost. || 4 people, Logistics package Option 1 + Budget hotels (2 rooms): \u20b928,560 (logistics for 4 people) + \u20b922,400 (hotel, 2 rooms) = \u20b950,960 total B2B package cost.\\nVALID: 1 Oct 2026 \u2013 31 Mar 2027 (except 15 Dec \u2013 15 Jan)\\nGUESTS: 2 Adults\\nSEASON: Season Rate Card\\nPREPARED ON: 05 Nov 2026\\nSAMPLE: yes\\n\\nWHY BOOK WITH US\\n- Your brand, not ours: We are a white-label partner. Our name does not appear on the quote or anywhere on the trip, so your guests travel with you.\\n- Future referrals stay with you: Because we never show our name, happy guests remember your brand, come back to you, and send their friends and family to you.\\n- Quick response and sales support: Fast replies on quotes, changes and bookings. Need help closing a booking? We can join a phone call with you and your guest.\\n- Taken care of on the ground: An expert local team on each island who know how to look after guests, with cab and ferry timings planned for them.\\n\\nDAY-WISE ITINERARY\\nDAY 1 | Port Blair arrival\\n- Airport pickup and hotel drop\\n- Cellular Jail visit\\n- Corbyn's Cove Beach\\n- Light & Sound Show\\n- Hotel drop\\nDAY 2 | Port Blair to Havelock Island \u00b7 Radhanagar Beach\\n- Breakfast\\n- Hotel to jetty drop\\n- Private ferry to Havelock\\n- Jetty to hotel drop\\n- Radhanagar Beach visit\\n- Hotel drop\\nDAY 3 | Elephant Beach excursion\\n- Breakfast\\n- Hotel to Elephant Beach jetty\\n- Boat transfer to Elephant Beach\\n- Jetty pickup and hotel drop\\n- Evening at leisure\\nDAY 4 | Havelock to Neil Island \u00b7 sightseeing\\n- Breakfast\\n- Hotel to Havelock jetty\\n- Private ferry to Neil\\n- Jetty to hotel drop\\n- Laxmanpur Beach and Natural Bridge\\n- Hotel drop\\nDAY 5 | Neil Island to Port Blair\\n- Breakfast\\n- Bharatpur Beach visit\\n- Neil jetty drop\\n- Private ferry to Port Blair\\n- Jetty pickup and hotel drop\\nDAY 6 | Departure\\n- Breakfast\\n- Hotel pickup and airport drop\\n\\nEVERY OPTION INCLUDES\\n- Private A/C cab for all transfers and sightseeing\\n- All sightseeing as per itinerary\\n- Private ferry tickets\\n- Cellular Jail entry and all permits\\n- Elephant Beach boat tickets\\n- Light & Sound Show tickets\\n- Beach photoshoot at Radhanagar\\n- Tour co-ordinator on each island\\n- Taxes included\\n\\nLOGISTICS OPTIONS\\nOPTION 1 | Green Ocean on every sector (open deck experience) | \u20b917,724\\n- Port Blair \u2192 Havelock: Green Ocean 1 \u00b7 6:30 AM (early morning)\\n- Havelock \u2192 Neil: Green Ocean 1 (normal timing)\\n- Neil \u2192 Port Blair: Green Ocean 1 (normal timing)\\nOPTION 2 | Early start to Havelock, other sectors at normal timings | \u20b920,906\\n- Port Blair \u2192 Havelock: Makruzz 6:00 AM / Nautika 6:15 AM / Green Ocean 2 7:00 AM (early morning)\\n- Havelock \u2192 Neil: Green Ocean 2 (normal timing)\\n- Neil \u2192 Port Blair: Nautika (normal timing)\\nOPTION 3 | Balanced mix of ferries for the overall experience | \u20b921,819\\n- Port Blair \u2192 Havelock: Makruzz \u00b7 8:00 AM (normal timing)\\n- Havelock \u2192 Neil: Green Ocean 2 (normal timing)\\n- Neil \u2192 Port Blair: Nautika (normal timing)\\n\\nMORE GUESTS\\nOPTION 1 | Price for 2 Adults: \u20b917,724 | Each extra person (adult or child aged 2+): + \u20b95,418\\nOPTION 2 | Price for 2 Adults: \u20b920,906 | Each extra person (adult or child aged 2+): + \u20b97,009\\nOPTION 3 | Price for 2 Adults: \u20b921,819 | Each extra person (adult or child aged 2+): + \u20b97,466\\n\\nMORE GUESTS NOTE\\n- The cab is already in the price for 2 Adults. Each extra person only adds their own ferry, boat and entry tickets, taxes included.\\n- The extra person price is the same for an adult or a child aged 2 years or above. Children below 2 years are free.\\n- Trip for 3 people? If you select Logistics package Option 1: 2 Adults (\u20b917,724) + 1 extra person (\u20b95,418) = Total B2B logistics cost \u20b923,142.\\n- Trip for 3 people? If you select Logistics package Option 2: 2 Adults (\u20b920,906) + 1 extra person (\u20b97,009) = Total B2B logistics cost \u20b927,915.\\n- Trip for 3 people? If you select Logistics package Option 3: 2 Adults (\u20b921,819) + 1 extra person (\u20b97,466) = Total B2B logistics cost \u20b929,285.\\n- Trip for 4 people? If you select Logistics package Option 1: 2 Adults (\u20b917,724) + 2 extra people (\u20b95,418 \u00d7 2) = Total B2B logistics cost \u20b928,560. Up to 5 people travel in one cab.\\n- Trip for 6 people? If you select Logistics package Option 1: 2 Adults (\u20b917,724) + 4 extra people (\u20b95,418 \u00d7 4) + luggage cab (\u20b92,730) = Total B2B logistics cost \u20b942,126. One cab carries the people and a small extra cab carries the luggage on transfer days. Prefer two full cabs for 6 people? Add the extra cab (\u20b96,048) instead of the luggage cab.\\n- Trip for 7 to 10 people? Take the logistics package price for 2 Adults + the extra person price for each extra person + one extra cab (\u20b96,048). For example, 8 people with Logistics package Option 1: 2 Adults (\u20b917,724) + 6 extra people (\u20b95,418 \u00d7 6) + extra cab (\u20b96,048) = Total B2B logistics cost \u20b956,280.\\n- More than 10 people, groups, or any customisation: please check the price with us in advance.\\n\\nOWN HOTEL NOTE\\n- You can book any logistics package option with us and book the hotels yourself, for the same islands and nights as in the itinerary.\\n- If you would like us to book the hotels on your behalf, see the hotel categories below. They are based on this itinerary's islands and nights, each with its own hotel price, and each category shows the total B2B package cost with every logistics option.\\n- Either way, please check with us before booking a hotel, so we can confirm availability and match the ferry and cab timings and other arrangements.\\n- If the hotel is not in our list, tell us its location. Hotels far from the town, on a longer or unusual route, or in an offbeat area may change the logistics package price.\\n\\nHOTELS\\nBUDGET | \u20b911,200 | 1 room \u00b7 5 nights \u00b7 breakfast | Extra room (for every 2 more people), all 5 nights: \u20b911,200 | Extra mattress (3rd person in a room), all 5 nights: \u20b94,600\\n- Port Blair \u00b7 2 nights: Golden View / Mahira Residency | \u20b91,800 | \u20b93,600 | \u20b91,000\\n- Havelock \u00b7 2 nights: Radhakrishna Hotel / Hotel Anibesh | \u20b92,400 | \u20b94,800 | \u20b9800\\n- Neil \u00b7 1 night: Laxmi Continental / CS Empire | \u20b92,800 | \u20b92,800 | \u20b91,000\\nSTANDARD | \u20b915,800 | 1 room \u00b7 5 nights \u00b7 breakfast | Extra room (for every 2 more people), all 5 nights: \u20b915,800 | Extra mattress (3rd person in a room), all 5 nights: \u20b96,400\\n- Port Blair \u00b7 2 nights: TGS Dine Inn / Red Carpet / Runway Inn / Mount View Pristine | \u20b92,500 | \u20b95,000 | \u20b91,200\\n- Havelock \u00b7 2 nights: Island Blue Beach Resort / Blue Bird Resort / Ocean Pearl Beach Resort | \u20b94,000 | \u20b98,000 | \u20b91,500\\n- Neil \u00b7 1 night: Laxmi Continental / CS Empire | \u20b92,800 | \u20b92,800 | \u20b91,000\\nDELUXE | \u20b922,100 | 1 room \u00b7 5 nights \u00b7 breakfast | Extra room (for every 2 more people), all 5 nights: \u20b922,100 | Extra mattress (3rd person in a room), all 5 nights: \u20b98,000\\n- Port Blair \u00b7 2 nights: Reef Atlantis / Driftwood / Olive | \u20b93,800 | \u20b97,600 | \u20b91,400\\n- Havelock \u00b7 2 nights: Whitecoral Beach Resort / Shangrilas Beach Resort / NK Eco Resort Havelock / Havelock Exotic Beach Resort / Senses | \u20b94,725 | \u20b99,450 | \u20b91,800\\n- Neil \u00b7 1 night: NK Eco Resort Neil / Reef Valley Resort | \u20b95,050 | \u20b95,050 | \u20b91,600\\nPREMIUM | \u20b927,300 | 1 room \u00b7 5 nights \u00b7 breakfast | Extra room (for every 2 more people), all 5 nights: \u20b927,300 | Extra mattress (3rd person in a room), all 5 nights: \u20b99,300\\n- Port Blair \u00b7 2 nights: Sea Deck - Sea Facing Room - Upgrade / SR Castle / Hornbill Nest Resort / The Amyyra / Bayleaf Inn - Deluxe Room - Upgrade | \u20b94,500 | \u20b99,000 | \u20b91,500\\n- Havelock \u00b7 2 nights: Coral Bentley / Aquays Havelock | \u20b96,500 | \u20b913,000 | \u20b92,100\\n- Neil \u00b7 1 night: Aquays Neil / Reef Valley Resort | \u20b95,300 | \u20b95,300 | \u20b92,100\\nLUXURY | \u20b939,500 | 1 room \u00b7 5 nights \u00b7 breakfast | Extra room (for every 2 more people), all 5 nights: \u20b939,500 | Extra mattress (3rd person in a room), all 5 nights: \u20b913,600\\n- Port Blair \u00b7 2 nights: Sea Shell Coral Cove / Heritage MNR / Sea Cliff / Sea Hills Hotel - Premium Suite Room - Upgrade / Adhvasaha Resort - Premium Cottage with Bathtub - Upgrade | \u20b97,000 | \u20b914,000 | \u20b92,300\\n- Havelock \u00b7 2 nights: Havelock Island Beach Resort / Sands Marina / Deforet Resort / Sea Hills Havelock | \u20b98,000 | \u20b916,000 | \u20b93,000\\n- Neil \u00b7 1 night: TSG Aura / Sea Shell Neil | \u20b99,500 | \u20b99,500 | \u20b93,000\\n\\nHOTEL BOOKING NOTE\\n- Hotel prices are the direct hotel rates for the rooms and nights shown, taxes included.\\n- Booking the hotels yourself: email the hotel directly, check availability, block the room and make the payment to the hotel, then let us know.\\n- Booking through us: we email the hotel on your behalf with you in CC. You still pay the hotel directly, then attach the payment screenshot in the same email to get the booking confirmation from the hotel.\\n- Each hotel is paid separately, directly to that hotel.\\n- Rooms are subject to availability. If a listed hotel is full, a hotel of the same category will be offered.\\n- Children below 5 years usually stay free, but please check with the hotel once before booking.\\n- Family rooms for 4 people are available at some hotels and can cost less than 2 rooms. Ask us.\\n- For bigger groups, use the same method: add a room for every 2 people, or an extra mattress for a 3rd person in a room.\\n- Hotel prices are season rates, valid 1 October to 31 March, and do not apply from 15 December to 15 January. Some hotels have different peak dates and peak surcharges, so please check the price with us or the hotel before booking.\\n\\nINCLUDED\\n- 1 A/C cab (Ertiga / Sedan / Mahindra SUV or similar) for transfers and sightseeing as per itinerary, point to point, not at disposal\\n- Private ferry tickets as per the logistics option chosen\\n- Cellular Jail entry tickets\\n- Light & Sound Show tickets\\n- Boat tickets to Elephant Beach\\n- All entry tickets and necessary permits\\n- Complimentary professional photoshoot at Radhanagar Beach\\n- Tour co-ordinator assistance on each island\\n- Taxes on the logistics package\\n- Accommodation with breakfast (except day 1), only when the hotel option is booked\\n\\nNOT INCLUDED\\n- Airfare (domestic / international)\\n- Hotel stay, unless the hotel option is booked\\n- Lunch and dinner\\n- Water sports at Elephant Beach, Bharatpur Beach or elsewhere\\n- Personal expenses (laundry, telephone calls, tips, minibar, etc.)\\n- Extra trips or additional stops, even on the way, such as restaurants or sightseeing points. These need prior notice and may cost extra\\n- Anything not mentioned in the inclusions\\n\\nTERMS\\n- Prices are valid from 1 October 2026 to 31 March 2027, except 15 December to 15 January. Peak dates are quoted separately; please check with us.\\n- Ferry timings and seats depend on the ferry operator and the weather; tickets are booked on the confirmed option.\\n- Cab is point to point as per the itinerary and not at disposal.\\n- Hotel prices, peak dates, peak surcharges and gala dinners follow each hotel's own rules.\\n\\nLOGISTICS PACKAGE CANCELLATION\\n- A flat cancellation fee of \u20b91,500 per person is charged. The remaining amount is refunded.\\n\\nHOTEL CANCELLATION\\n- Hotel cancellations follow the respective hotel's cancellation policy.\\n- Please note: some hotels have very strict cancellation policies, and some bookings are not refundable. Check the hotel's cancellation policy before booking, whether you book directly or through us.\\n\\nPEAK CANCELLATION\\n- No refund for hotel stays between 15 December and 15 January.\\n- Some hotels have a longer peak period (for example until 20 January). For those hotels, no refund applies for their whole peak period, so check that hotel's cancellation policy.\\n\";\n\nconst DEFAULT_INCLUDES = [\"Private A/C cab for all transfers and sightseeing\",\"All sightseeing as per itinerary\",\"Private ferry tickets\",\"Entry tickets and permits\",\"Boat tickets for excursions\",\"Light & Sound Show\",\"Beach photoshoot at Radhanagar\",\"Tour co-ordinator on each island\",\"Taxes included\"];\nconst SECTIONS = {\n  \"WHY BOOK WITH US\":\"why\",\"MORE GUESTS\":\"more\",\"MORE GUESTS NOTE\":\"morenote\",\"QUICK GUIDE\":\"guide\",\"LOGISTICS PACKAGE CANCELLATION\":\"std\",\"LOGISTICS CANCELLATION\":\"std\",\"HOTEL CANCELLATION\":\"hcan\",\"HIGHLIGHTS\":\"why\",\"OWN HOTEL NOTE\":\"own\",\"BOOKING YOUR OWN HOTEL\":\"own\",\n  \"EVERY OPTION INCLUDES\":\"linc\",\"INCLUDED IN EVERY OPTION\":\"linc\",\n  \"DAY-WISE ITINERARY\":\"itin\",\"DAY WISE ITINERARY\":\"itin\",\"ITINERARY\":\"itin\",\"DAY-BY-DAY ITINERARY\":\"itin\",\n  \"LOGISTICS OPTIONS\":\"log\",\"LOGISTICS PACKAGE\":\"log\",\"LOGISTICS\":\"log\",\n  \"HOTELS\":\"hot\",\"HOTELS (OPTIONAL)\":\"hot\",\n  \"INCLUDED\":\"inc\",\"WHAT'S INCLUDED\":\"inc\",\"INCLUSIONS\":\"inc\",\n  \"NOT INCLUDED\":\"exc\",\"WHAT'S NOT INCLUDED\":\"exc\",\"EXCLUSIONS\":\"exc\",\n  \"HOTEL BOOKING NOTE\":\"note\",\"HOW HOTEL BOOKING WORKS\":\"note\",\n  \"TERMS\":\"terms\",\"TERMS AND CONDITIONS\":\"terms\",\n  \"PEAK CANCELLATION\":\"peak\",\"PEAK SEASON CANCELLATION\":\"peak\",\n  \"STANDARD CANCELLATION\":\"std\",\"CANCELLATION POLICY\":\"std\"\n};\nconst FIELDS = {\"TITLE\":\"title\",\"NIGHTS\":\"nights\",\"VALID\":\"valid\",\"GROUP EXAMPLE\":\"groupExample\",\"ROUTE\":\"route\",\"STAY\":\"stay\",\"TRAVEL DATES\":\"dates\",\"DATES\":\"dates\",\"GUESTS\":\"guests\",\n  \"SEASON\":\"season\",\"HEADER BADGE\":\"season\",\"PREPARED ON\":\"preparedOn\",\"COVER IMAGE\":\"coverImage\",\"SAMPLE\":\"sample\"};\nconst money = s => Number(String(s||\"\").replace(/[^\\d.]/g,\"\")) || 0;\nconst splitOnce = (s, ch) => { const i = s.indexOf(ch); return i < 0 ? [s, \"\"] : [s.slice(0,i).trim(), s.slice(i+1).trim()]; };\n\nfunction parseText(text){\n  const q = {more:[],moreNote:[],guide:[],why:[],ownHotel:[],logisticsIncludes:[],logistics:[],hotels:[],itinerary:[],inclusions:[],exclusions:[],hotelNote:[],terms:[],cancellation:{peak:[],standard:[],hotel:[]}};\n  let sec = null, cur = null;\n  for (const raw of text.split(/\\r?\\n/)){\n    const line = raw.trim(); if (!line) continue;\n    const key = line.toUpperCase().replace(/[:\\s]+$/,\"\");\n    if (SECTIONS[key]) { sec = SECTIONS[key]; cur = null; continue; }\n    const isItem = /^[-\u2022\u2713\u2717\u2715*]\\s*/.test(line);\n    const item = line.replace(/^[-\u2022\u2713\u2717\u2715*]\\s*/,\"\");\n    if (!sec){\n      const [k, v] = splitOnce(line, \":\");\n      const f = FIELDS[k.toUpperCase()];\n      if (f === \"route\") q.route = v.split(/\u2192|->|>/).map(s=>s.trim()).filter(Boolean);\n      else if (f === \"sample\") q.sample = /^y/i.test(v);\n      else if (f) q[f] = v;\n      continue;\n    }\n    if (sec === \"itin\"){\n      if (!isItem && /^DAY\\s*\\d+/i.test(line)){\n        const p = line.split(\"|\").map(s=>s.trim());\n        cur = {date: p.length > 2 ? p[1] : \"\", title: p.length > 2 ? p.slice(2).join(\" | \") : (p[1] || p[0]), items: []};\n        q.itinerary.push(cur);\n      } else if (cur) cur.items.push(item);\n    } else if (sec === \"log\"){\n      if (!isItem){\n        const p = line.split(\"|\").map(s=>s.trim());\n        cur = {name: p[0], tag: p[1] || \"\", total: money(p[2]), perPerson: money(p[3]), legs: []};\n        q.logistics.push(cur);\n      } else if (cur) cur.legs.push(splitOnce(item, \":\"));\n    } else if (sec === \"more\"){\n      if (!isItem){\n        const p = line.split(\"|\").map(s=>s.trim());\n        q.more.push({name:p[0], prices:p.slice(1).map(x=>{const [k,v]=splitOnce(x,\":\");return [k, money(v)];})});\n      }\n    } else if (sec === \"hot\"){\n      if (!isItem){\n        const p = line.split(\"|\").map(s=>s.trim());\n        const name = p[0].charAt(0) + p[0].slice(1).toLowerCase();\n        cur = {category: name, total: money(p[1]), basis: p[2] || \"\", extra: p.slice(3).map(x=>{const i=x.lastIndexOf(\":\");return [x.slice(0,i).trim(), money(x.slice(i+1))];}), islands: []};\n        q.hotels.push(cur);\n      } else if (cur) { const [isl, rest] = splitOnce(item, \":\"); const parts = rest.split(\"|\").map(x=>x.trim()); cur.islands.push([isl, parts[0], parts[2] ? money(parts[2]) : (parts[1] ? money(parts[1]) : 0), parts[2] ? money(parts[1]) : 0, parts[3] ? money(parts[3]) : 0]); }\n    } else {\n      const target = {inc:q.inclusions, exc:q.exclusions, note:q.hotelNote, linc:q.logisticsIncludes, morenote:q.moreNote, guide:q.guide, why:q.why, own:q.ownHotel, terms:q.terms, peak:q.cancellation.peak, std:q.cancellation.standard, hcan:q.cancellation.hotel}[sec];\n      target.push(item);\n    }\n  }\n  return q;\n}\n\nconst $ = s => document.querySelector(s);\nconst esc = v => String(v ?? \"\").replace(/[&<>\"]/g, c => ({\"&\":\"&amp;\",\"<\":\"&lt;\",\">\":\"&gt;\",'\"':\"&quot;\"}[c]));\nconst inr = n => \"\u20b9\" + Math.round(Number(n) || 0).toLocaleString(\"en-IN\");\nconst list = (arr, cls) => `<ul class=\"list ${cls}\">${(arr||[]).map(x=>`<li><span>${esc(x)}<\/span><\/li>`).join(\"\")}<\/ul>`;\nconst waves = `<svg class=\"waves\" viewBox=\"0 0 400 18\" preserveAspectRatio=\"none\" aria-hidden=\"true\"><path d=\"M0 9 Q25 0 50 9 T100 9 T150 9 T200 9 T250 9 T300 9 T350 9 T400 9\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.5\"/><\/svg>`;\n\n\nfunction guestWording(){\n  const R = [[/Total B2B logistics cost/g,\"Total logistics cost\"],[/Total B2B package cost/g,\"Total package cost\"],[/total B2B package cost/g,\"total package cost\"],[/Total B2B cost/g,\"Total cost\"],\n             [/Net hotel rate for/g,\"Hotel rate for\"],[/Direct net hotel rates/g,\"Hotel rates\"],[/direct hotel rates/g,\"hotel rates\"],[/ B2B /g,\" \"]];\n  const w = document.createTreeWalker(document.getElementById(\"sheet\"), NodeFilter.SHOW_TEXT);\n  let n; while ((n = w.nextNode())){ let t = n.nodeValue; R.forEach(([a,b]) => { t = t.replace(a,b); }); if (t !== n.nodeValue) n.nodeValue = t; }\n}\nfunction render(q){\n  const L = q.logistics || [], H = q.hotels || [];\n  const LP = L.filter(o => !/^cab/i.test(o.name));   // hotel totals: logistics packages only, never cab only\n  const AG = window.AGENT || {};\n  const coverImg = AG.cover || q.coverImage;\n  const cover = coverImg\n    ? ` class=\"cover has-img\" style=\"background-image:linear-gradient(180deg,rgba(16,36,44,.25),rgba(16,36,44,.88)),url('${esc(coverImg)}')\"`\n    : ` class=\"cover\"`;\n  const brand = (AG.logo || AG.name) ? `<div class=\"abrand\">${AG.logo?`<img src=\"${esc(AG.logo)}\" alt=\"\">`:\"\"}${AG.name?`<span>${esc(AG.name)}<\/span>`:\"\"}<\/div>` : \"\";\n  const contact = [AG.name, AG.phone, AG.email, AG.web].filter(Boolean).map(esc).join(\" \u00b7 \");\n  const G = AG.mode === \"guest\", nOpt = L.filter(o=>!/^cab/i.test(o.name)).length, PKG = H.length > 0, GP = G && PKG;\n  const LPk = L.filter(o => !/^cab/i.test(o.name)), many = H.length * LPk.length > 1;\n\n  const facts = [[\"Valid\",G ? String(q.valid||\"\").replace(/\\s*\\(except[^)]*\\)/i,\"\") : q.valid],[\"Travel dates\",q.dates],[\"Guests\",q.guests],[\"Stay\",q.stay],[\"Prepared on\",q.preparedOn]]\n    .filter(f=>f[1]).map(f=>`<div><dt>${esc(f[0])}<\/dt><dd>${esc(f[1])}<\/dd><\/div>`).join(\"\");\n\n  const nice = n => { const t=String(n||\"\"); return t.charAt(0).toUpperCase()+t.slice(1).toLowerCase(); };\n  const opts = L.map(o=>`\n    <article class=\"opt\">\n      ${/^cab/i.test(o.name)?`<div class=\"eyebrow\">Cab only package<\/div>\n      <h3>Cab + entry tickets + all other inclusions<\/h3>\n      <div class=\"tc\">Total B2B cost<\/div>\n      <div class=\"price num\">${inr(o.total)}<\/div>\n      <div class=\"pp\">Total B2B cost for ${esc(q.guests)}, taxes included. Covers cab, transfers, sightseeing, entry and boat tickets, and co-ordinator assistance. <strong>Everything in the package except ferry tickets and hotels (you book them), and anything not mentioned in the inclusions.<\/strong><\/div>`:`<div class=\"eyebrow\">Logistics package \u00b7 ${esc(nice(o.name))}<\/div>\n      <h3>Cab + ferries + entry tickets + all other inclusions<\/h3>\n      <div class=\"tc\">Total B2B logistics cost<\/div>\n      <div class=\"price num\">${inr(o.total)}<\/div>\n      <div class=\"pp\">Total B2B logistics cost for ${esc(q.guests)}, taxes included. Covers cab, transfers, sightseeing, entry tickets, ferry and boat tickets, and co-ordinator assistance. <strong>Everything in the package except hotels${(window.AGENT||{}).mode===\"guest\"?\"\":\" (optional)\"}, and anything not mentioned in the inclusions.<\/strong><\/div>`}\n      ${o.tag?`<div class=\"tag\">${esc(o.tag)}<\/div>`:\"\"}\n      <ul class=\"legs\">${(o.legs||[]).map(l=>`<li><span class=\"leg\">${esc(l[0])}<\/span><span>${esc(l[1])}<\/span><\/li>`).join(\"\")}<\/ul>\n      ${o.note?`<div class=\"note\">${esc(o.note)}<\/div>`:\"\"}\n    <\/article>`).join(\"\");\n\n  const hotels = H.map(h=>`\n    <div class=\"hpair\"><article class=\"hcat\">\n      <header><h3>${esc(h.category)}<\/h3><span class=\"hprice num\">${inr(h.total)}<small>Hotel total \u00b7 ${esc(q.nights||\"all nights\")}<\/small><\/span><\/header>\n      <p class=\"basis\">Net hotel rate for ${esc(q.guests)} \u00b7 ${esc(h.basis)} \u00b7 taxes included<\/p>\n      <dl>${(h.islands||[]).map(i=>{const n=(i[0].match(/(\\d+)\\s*night/)||[])[1];return `<div><dt><span>${esc(i[0])}<\/span>${i[2]?`<span class=\"num\">${inr(i[2])}<\/span>`:\"\"}<\/dt><dd>${esc(i[1])}<\/dd>${i[3]&&n?`<dd class=\"rate num\">${(()=>{const b=String(h.basis||\"\"),r=+((b.match(/(\\d+)\\s*rooms?/)||[])[1]||1),m=+((b.match(/(\\d+)\\s*extra mattress/)||[])[1]||0),nn=`${n} night${n===\"1\"?\"\":\"s\"}`;if(m&&i[4])return `(${r>1?r+\" rooms \u00d7 \":\"Room \"}${inr(i[3])} + ${m>1?m+\" \u00d7 \":\"\"}extra mattress ${inr(i[4])}) per night \u00d7 ${nn}`;return r>1?`${r} rooms \u00d7 ${inr(i[3])} per night \u00d7 ${nn}`:`Room ${inr(i[3])} per night \u00d7 ${nn}`})()} = ${inr(i[2])}<\/dd>${i[4]&&!/extra mattress/.test(String(h.basis||\"\"))?`<dd class=\"rate num\">Extra person (extra mattress) ${inr(i[4])} per night<\/dd>`:\"\"}`:\"\"}<\/div>`}).join(\"\")}<\/dl>\n      ${(h.extra||[]).length>=2?`<div class=\"hmore\"><div class=\"hx-head\">More people? (hotel only)<\/div><ul class=\"hx num\"><li><span>If 2 rooms: ${inr(h.total)} + ${inr(h.total)}<\/span><b>= ${inr(h.total*2)}<\/b><\/li><li><span>If an extra person in any room: add per extra person (extra mattress)<\/span><b>+ ${inr(h.extra[1][1])}<\/b><\/li><\/ul><p class=\"hx-eg\">All amounts are hotel totals for ${esc(q.nights||\"all nights\")}.<\/p><\/div>`:\"\"}\n    <\/article>\n      ${LP.length?`<div class=\"htot\"><div class=\"htot-h\">Total B2B package cost \u00b7 ${esc(q.guests)}<\/div><div class=\"htot-s\">${esc(nice(h.category))} hotels + Logistics for ${esc(q.guests)}<\/div>\n        <div class=\"sums\">${LP.map(o=>`<div class=\"sum num\">\n          <div class=\"s1\"><strong>${esc(nice(h.category))} hotels<\/strong>${(()=>{const r=String(h.basis||\"\").split(\"\u00b7\").map(x=>x.trim()).filter(x=>/room|night/i.test(x)).join(\", \");return r?` <small class=\"rm\">(${esc(r)})<\/small>`:\"\"})()}<b>${inr(h.total)}<\/b><\/div>\n          <div class=\"s2\"><span><i class=\"pl\">+<\/i> Logistics ${esc(nice(o.name))} <small class=\"rm\">(cab + ferries + entry tickets)<\/small><\/span><b>${inr(o.total)}<\/b><\/div>\n          <div class=\"s3\"><span><i class=\"eq\">=<\/i> Total<\/span><b>${inr(o.total + h.total)}<\/b><\/div>\n        <\/div>`).join(\"\")}<\/div>\n      <\/div>`:\"\"}\n    <\/div>`).join(\"\");\n\n\n\n  const days = (q.itinerary||[]).map((d,i)=>`\n    <div class=\"day\"><div class=\"dn\"><b>Day ${i+1}<\/b><span>${esc(d.date)}<\/span><\/div>\n      <div><h3>${esc(d.title)}<\/h3><ul>${(d.items||[]).map(x=>`<li>${esc(x)}<\/li>`).join(\"\")}<\/ul><\/div><\/div>`).join(\"\");\n\n  const logHotSec = GP ? \"\" : `\n    <section class=\"sec\">\n      <h2>${G && PKG ? \"Logistics package\" : \"Logistics package (excluding hotels)\"}<\/h2>\n      <p class=\"lead\">${G ? (PKG ? `The cab, ferries, sightseeing and tickets for the whole trip, as in the itinerary above. The hotels and the total package price are in the next section.` : `This price covers the whole trip exactly as in the itinerary above, except the hotels.${nOpt > 1 ? \" Choose one of the options below; they differ only in the ferries used.\" : \"\"} ${nOpt > 1 ? \"Each price is\" : \"The price is\"} the total for ${esc(q.guests)}, taxes included.`) : `This price covers the whole trip exactly as in the itinerary above, except the hotels. Choose one of the options below; they differ only in the ferries used. Each price is the total for ${esc(q.guests)}, taxes included. Hotels are priced separately in the next section, so you can add them only if your guests need them.`}<\/p>\n      <div class=\"incl-head\">${G && nOpt < 2 ? \"Included\" : \"Included in every option\"}<\/div>\n      <ul class=\"chips\">${(q.logisticsIncludes && q.logisticsIncludes.length ? q.logisticsIncludes : DEFAULT_INCLUDES).map(x=>`<li>${esc(x)}<\/li>`).join(\"\")}<\/ul>\n      <div class=\"opts\">${opts}<\/div>\n      ${(q.more||[]).length?`<h3 class=\"subh\">More than 2 Adults? Add this for each extra person<\/h3>\n      <div class=\"table-wrap\"><table class=\"matrix num\">\n        <thead><tr><th>Logistics package<\/th>${q.more[0].prices.map(p=>`<th>${esc(p[0])}<\/th>`).join(\"\")}<\/tr><\/thead>\n        <tbody>${q.more.map(r=>`<tr><td><strong>${esc(nice(r.name))}<\/strong><\/td>${r.prices.map(p=>`<td>${inr(p[1])}<\/td>`).join(\"\")}<\/tr>`).join(\"\")}<\/tbody>\n      <\/table><\/div>\n      ${(q.moreNote||[]).length?moreNoteHtml(q.moreNote):\"\"}`:\"\"}\n      ${(q.ownHotel||[]).length?`<div class=\"notebox own\"><h3>Prefer to book the hotels yourself?<\/h3><ul class=\"terms\">${q.ownHotel.map(x=>`<li>${esc(x)}<\/li>`).join(\"\")}<\/ul><\/div>`:\"\"}\n    <\/section>\n\n    ${H.length?`<section class=\"sec hotsec\">\n      <h2>${G ? \"Hotels and total package price\" : \"Hotels (optional, add to any logistics package)\"}<\/h2>\n      <p class=\"lead\">${G ? `Hotels for ${esc(q.guests)}, breakfast and taxes included, for all the nights of this itinerary. The total package price (hotels + logistics) is shown under each category.` : `Direct net hotel rates for ${esc(q.guests)}, breakfast and taxes included, for all the nights of this itinerary. One hotel from the list, or a similar one, is booked on each island, and under each category the total B2B package cost is already added up. Want a hotel not on this list? Ask us, and check its location with us first, as hotels outside the town area can change the logistics package price.`}<\/p>\n      <div class=\"hotels\">${hotels}${false?`<div class=\"hpair calcslot\">${`<div class=\"notebox calc\"><h3>More than 2 Adults?<\/h3><p style=\"margin:0\"><strong>Total B2B package cost = your logistics package (2 Adults + each extra person) + your hotel package (total rooms + extra mattress, if any).<\/strong><\/p><div class=\"hx-head\">Examples<\/div>${groupExHtml(q.groupExample)}<\/div>`}<\/div>`:\"\"}<\/div>\n    <\/section>`:\"\"}\n\n`;\n  const pkgHtml = !GP ? \"\" : `<section class=\"sec\">\n      <h2>Complete tour package<\/h2>\n      <p class=\"lead\">One price for the whole trip as in the itinerary above: hotels with breakfast, cab, sightseeing, entry and boat tickets, ferries and taxes. ${many ? \"Each price is\" : \"The price is\"} the total for ${esc(q.guests)}, taxes included.<\/p>\n      <div class=\"pkgs\">${H.map(h => LPk.map(o => `<article class=\"opt pkcard\">\n        <div class=\"eyebrow\">Complete tour package${H.length > 1 ? \" \u00b7 \" + esc(nice(h.category)) + \" hotels\" : \"\"}${LPk.length > 1 ? \" \u00b7 \" + esc(nice(o.name)) : \"\"}<\/div>\n        <div class=\"price num\">${inr(o.total + h.total)}<\/div>\n        <div class=\"pp\">Total for ${esc(q.guests)}, taxes included<\/div>\n        <div class=\"pk-h\">Hotels <span>(${esc(String(h.basis||\"\").split(\"\u00b7\").map(x=>x.trim()).filter(x=>/room|night|breakfast/i.test(x)).join(\", \"))})<\/span><\/div>\n        <dl class=\"pk-hot\">${(h.islands||[]).map(i=>`<div><dt>${esc(i[0])}<\/dt><dd>${esc(i[1])} <small class=\"alt\">${/ \\/ /.test(i[1]) ? \"(one of these, or similar)\" : \"or similar\"}<\/small><\/dd><\/div>`).join(\"\")}<\/dl>\n        <div class=\"pk-h\">Ferries${o.tag ? ` <span>(${esc(o.tag)})<\/span>` : \"\"}<\/div>\n        <ul class=\"legs\">${(o.legs||[]).map(l=>`<li><span class=\"leg\">${esc(l[0])}<\/span><span>${esc(l[1])}<\/span><\/li>`).join(\"\")}<\/ul>\n      <\/article>`).join(\"\")).join(\"\")}<\/div>\n    <\/section>`;\n  const c = q.cancellation || {};\n  const WHYPOS = (document.getElementById(\"whypos\")||{}).value || \"end\";\n  const whyBlock = (q.why||[]).length ? `<section class=\"sec why-band\">\n      <div class=\"eyebrow\">Working with us<\/div>\n      <h2>Why agents book with us<\/h2>\n      <div class=\"why\">${q.why.map(x=>{const [t,d]=splitOnce(x,\":\");return `<div><h3>${esc(t)}<\/h3>${d?`<p>${esc(d)}<\/p>`:\"\"}<\/div>`}).join(\"\")}<\/div>\n    <\/section>` : \"\";\n  $(\"#sheet\").innerHTML = `\n    <header${cover}>\n      ${brand}<span class=\"badge\">${esc(q.season || \"Quote\")}<\/span>${q.sample?` <span class=\"badge\">Sample figures<\/span>`:\"\"}\n      <h1>${esc(q.title)}<\/h1>\n      <div class=\"route\">${(q.route||[]).map(esc).join(\" \u2192 \")}<\/div>\n      <dl class=\"facts\">${facts}<\/dl>\n      ${waves}\n    <\/header>\n\n    <section class=\"sec\">\n      <div class=\"eyebrow\">How to read this quote<\/div>\n      <ol class=\"steps\">${G ? [\n        `<li><b class=\"n\">1<\/b><p><strong>Check the itinerary.<\/strong> The day-wise plan comes first, so you know exactly what is covered.<\/p><\/li>`,\n        GP ? `<li><b class=\"n\">2<\/b><p><strong>${many ? \"Choose your complete tour package.\" : \"Your complete tour package.\"}<\/strong> One price for the whole trip: hotels with breakfast, cab, sightseeing, entry and boat tickets, ferries and taxes. Full details are under Included.<\/p><\/li>` :\n        nOpt > 1 ? `<li><b class=\"n\">2<\/b><p><strong>Pick a logistics package.<\/strong> It covers the cab, sightseeing, entry and boat tickets, ferries and taxes for the whole trip. Only the ferries change between the options.<\/p><\/li>`\n                 : `<li><b class=\"n\">2<\/b><p><strong>Your logistics package.<\/strong> It covers the cab, sightseeing, entry and boat tickets, ferries and taxes for the whole trip${PKG ? \"\" : \", everything except the hotels\"}.<\/p><\/li>`,\n        PKG && !GP ? `<li><b class=\"n\">3<\/b><p><strong>Your hotels and total price.<\/strong> The hotels for every night of the trip, with the total package price (hotels + logistics) shown underneath.<\/p><\/li>` : \"\"\n      ].join(\"\") : `\n        <li><b class=\"n\">1<\/b><p><strong>Check the itinerary.<\/strong> The day-wise plan comes first, so you know exactly what is covered.<\/p><\/li>\n        <li><b class=\"n\">2<\/b><p><strong>Pick a logistics package.<\/strong> It covers everything on the trip except hotels: cab, sightseeing, entry and boat tickets, ferries and taxes. Only the ferries change between the options.<\/p><\/li>\n        <li><b class=\"n\">3<\/b><p><strong>Add hotels if you need them.<\/strong> Add the hotel cost of any category to the logistics package. Each hotel category shows the total B2B package cost with every logistics option.<\/p><\/li>`}\n      <\/ol>\n      ${(q.guide||[]).length?`<dl class=\"guide\">${q.guide.map(x=>{const [t,d]=splitOnce(x,\":\");return `<div><dt>${esc(t)}<\/dt><dd>${esc(d)}<\/dd><\/div>`}).join(\"\")}<\/dl>`:\"\"}\n    <\/section>\n\n    ${WHYPOS===\"top\"?whyBlock:\"\"}\n\n    <section class=\"sec\">\n      <h2>Day-wise itinerary<\/h2>\n      <p class=\"lead\">${esc(q.stay)}<\/p>\n      <div class=\"days\">${days}<\/div>\n    <\/section>\n\n    ${GP ? pkgHtml : logHotSec}\n\n    ${q.groupExample?`<section class=\"sec\">${`<div class=\"notebox calc\"><h3>More than 2 Adults?<\/h3><p style=\"margin:0\"><strong>Total B2B package cost = your logistics package (2 Adults + each extra person) + your hotel package (total rooms + extra mattress, if any).<\/strong><\/p><div class=\"hx-head\">Examples<\/div>${groupExHtml(q.groupExample)}<\/div>`}<\/section>`:\"\"}\n\n    ${(q.hotelNote||[]).length?`<section class=\"sec\"><div class=\"notebox\"><h3>How hotel booking works<\/h3><ol>${q.hotelNote.map(x=>`<li>${esc(x)}<\/li>`).join(\"\")}<\/ol><\/div><\/section>`:\"\"}\n\n    <section class=\"sec two\">\n      <div><h2>Included<\/h2>${list(q.inclusions,\"in\")}<\/div>\n      <div><h2>Not included<\/h2>${list(q.exclusions,\"out\")}<\/div>\n    <\/section>\n\n    ${(q.terms||[]).length || (c.standard||[]).length || (c.hotel||[]).length || (c.peak||[]).length ? `<section class=\"sec\">\n      <h2>${G ? \"Notes\" : \"Terms\"}<\/h2>\n      <ol class=\"terms\">${(q.terms||[]).map(x=>`<li>${esc(x)}<\/li>`).join(\"\")}<\/ol>\n      <div class=\"cancel\">\n        ${(c.standard||[]).length?`<div><h3>${(window.AGENT||{}).mode===\"guest\"?\"Cancellation policy\":\"Logistics package cancellation\"}<\/h3><ul class=\"terms\">${c.standard.map(x=>`<li>${esc(x)}<\/li>`).join(\"\")}<\/ul><\/div>`:\"\"}\n        ${(c.hotel||[]).length?`<div><h3>Hotel cancellation<\/h3><ul class=\"terms\">${c.hotel.map(x=>`<li>${esc(x)}<\/li>`).join(\"\")}<\/ul><\/div>`:\"\"}\n        ${(c.peak||[]).length?`<div class=\"peak\"><h3>Peak season (hotels)<\/h3><ul class=\"terms\">${c.peak.map(x=>`<li>${esc(x)}<\/li>`).join(\"\")}<\/ul><\/div>`:\"\"}\n      <\/div>\n    <\/section>` : \"\"}\n\n    ${WHYPOS===\"end\"?whyBlock:\"\"}\n    <footer class=\"foot\">${contact?`<div class=\"acontact\">${contact}<\/div>`:\"\"}All prices in Indian Rupees, taxes included.${AG.mode===\"guest\"?\"\":\" Hotel prices are direct hotel rates.\"}<\/footer>`;\n  if (AG.mode === \"guest\") guestWording();\n}\n\n\nfunction applySize(){\n  const ph = ($(\"#pdfsize\")||{}).value !== \"a4\";\n  document.body.classList.toggle(\"phone\", ph);\n  let st = document.getElementById(\"pagesize\");\n  if(!st){ st = document.createElement(\"style\"); st.id = \"pagesize\"; document.head.appendChild(st); }\n  st.textContent = ph ? \"@media print{@page{size:110mm 330mm;margin:6mm}}\" : \"@media print{@page{size:A4;margin:12mm}}\";\n}\n\n\nfunction groupExHtml(t){\n  const items=String(t).split(\"||\").map(x=>x.trim()).filter(Boolean);\n  const card=x=>{\n    const m=x.match(/^(\\d+\\s*people),\\s*Logistics package (Option \\d+)\\s*\\+\\s*(.+?)\\s*\\(([^)]*)\\):\\s*(\u20b9[\\d,]+)\\s*\\(logistics[^)]*\\)\\s*\\+\\s*(\u20b9[\\d,]+)\\s*\\([^)]*\\)\\s*=\\s*(\u20b9[\\d,]+)/i);\n    if(!m) return `<li>${esc(x)}<\/li>`;\n    return `<div class=\"gx num\"><div class=\"gx-h\">Trip for ${esc(m[1])} <span>\u00b7 ${esc(m[2])} + ${esc(m[3])}<\/span><\/div>\n      <div class=\"gx-r\"><span>Logistics ${esc(m[2])} for ${esc(m[1])}<\/span><b>${esc(m[5])}<\/b><\/div>\n      <div class=\"gx-r\"><span><i class=\"pl\">+<\/i> ${esc(m[3])} (${esc(m[4])})<\/span><b>${esc(m[6])}<\/b><\/div>\n      <div class=\"gx-r gx-t\"><span><i class=\"eq\">=<\/i> Total B2B package cost<\/span><b>${esc(m[7])}<\/b><\/div><\/div>`;\n  };\n  const out=items.map(card);\n  return out.every(x=>x.startsWith(\"<div\"))?`<div class=\"gxs\">${out.join(\"\")}<\/div>`:`<ul class=\"terms\">${out.join(\"\")}<\/ul>`;\n}\nfunction moreNoteHtml(list){\n  const rules=[], ex=[], ask=[];\n  list.forEach(x=>{ if(/^Trip for/i.test(x)) ex.push(x); else if(/^More than 10/i.test(x)) ask.push(x); else rules.push(x); });\n  const card = x => {\n    const m = x.match(/^Trip for ([^?]+)\\?\\s*(.*)$/i); if(!m) return \"\";\n    let who = m[1].trim(), rest = m[2];\n    const om = rest.match(/^If you select (Logistics package Option \\d+):\\s*/i);\n    let opt = om ? om[1].replace(/^Logistics package /i,\"\") : \"\";\n    if(om) rest = rest.slice(om[0].length);\n    const tm = rest.match(/=\\s*Total B2B logistics cost\\s*(\u20b9[\\d,]+)\\.?/i);\n    let calc = rest, total = \"\", after = \"\";\n    if(tm){ calc = rest.slice(0, tm.index).trim(); total = tm[1]; after = rest.slice(tm.index + tm[0].length).trim(); }\n    else { const fm = rest.match(/For example,\\s*/i); if(fm){ after = rest.slice(0,fm.index).trim(); calc = rest.slice(fm.index+fm[0].length); const t2 = calc.match(/=\\s*Total B2B logistics cost\\s*(\u20b9[\\d,]+)\\.?/i); if(t2){ total=t2[1]; calc=calc.slice(0,t2.index).trim(); } } }\n    return `<div class=\"exc\"><div class=\"exc-h\">Trip for ${esc(who)}${opt?` <span>\u00b7 ${esc(opt)}<\/span>`:\"\"}<\/div>\n      <div class=\"exc-c\">${esc(calc)}<\/div>\n      ${total?`<div class=\"exc-t\">Total B2B logistics cost <b class=\"num\">${esc(total)}<\/b><\/div>`:\"\"}\n      ${after?`<div class=\"exc-n\">${esc(after)}<\/div>`:\"\"}<\/div>`;\n  };\n  return `${rules.length?`<div class=\"gtk\"><div class=\"gtk-h\">Good to know<\/div><ul>${rules.map(x=>`<li>${esc(x)}<\/li>`).join(\"\")}<\/ul><\/div>`:\"\"}\n    ${ex.length?`<div class=\"exh\">Examples<\/div><div class=\"exs\">${ex.map(card).join(\"\")}<\/div>`:\"\"}\n    ${ask.length?`<p class=\"ask\">${ask.map(esc).join(\" \")}<\/p>`:\"\"}`;\n}\nfunction show(text){\n  const msg = $(\"#msg\");\n  let q = null;\n  try{ q = text.trim().startsWith(\"{\") ? JSON.parse(text) : parseText(text); }catch(e){ q = null; }\n  if (!q || !q.title || !(q.logistics||[]).length){\n    msg.textContent = \"Some details are missing. Copy the whole quote from Claude (from TITLE down to the cancellation lines) and paste it again.\";\n    msg.className = \"msg err\"; return;\n  }\n  render(q);\n  try{\n    const t = String(q.title).replace(/(\\d+)\\s*Nights?\\s*(\\d+)\\s*Days?/i,\"$1N$2D\").replace(/\\s*[\u00b7|]\\s*/g,\" - \");\n    const rc = /rate card/i.test(q.season||\"\");\n    const v = String(q.valid||\"\").match(/([A-Za-z]{3})[a-z]*\\s+\\d{2}(\\d{2}).*?([A-Za-z]{3})[a-z]*\\s+\\d{2}(\\d{2})/);\n    const when = rc ? (v ? `${v[1]}${v[2]}-${v[3]}${v[4]}` : \"\") : (q.preparedOn||\"\");\n    document.title = [t, rc ? \"Season Rate Card\" : ((window.AGENT||{}).mode===\"guest\" ? \"Holiday Quote\" : \"B2B Quote\"), q.guests, when].filter(Boolean).join(\" - \").replace(/[\\\\/:*?\"<>]/g,\"\");\n  }catch(e){}\n  msg.textContent = q.sample ? \"Showing the sample quote. Paste your quote from Claude in the box and press Show quote.\" : \"Quote ready. Press Save as PDF (or Ctrl + P) and choose Save as PDF.\";\n  msg.className = \"msg\";\n}\n\n$(\"#render\").addEventListener(\"click\", () => show($(\"#code\").value));\n$(\"#whypos\").addEventListener(\"change\", () => show($(\"#code\").value));\n$(\"#sample\").addEventListener(\"click\", () => { $(\"#code\").value = SAMPLE_TEXT; show(SAMPLE_TEXT); });\n$(\"#print\").addEventListener(\"click\", () => { applySize(); window.print(); });\n$(\"#pdfsize\").addEventListener(\"change\", applySize);\nwindow.addEventListener(\"beforeprint\", applySize);\napplySize();\n\n$(\"#code\").value = SAMPLE_TEXT;\nshow($(\"#code\").value);\n<\/script>\n<\/body>\n<\/html>\n";
+const DEFAULT_COVER = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201200%20520%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22sky%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23F6B98A%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22.45%22%20stop-color%3D%22%23F7D9B0%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239FD6D2%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22sea%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232FA3A6%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230B5E68%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3CradialGradient%20id%3D%22sun%22%20cx%3D%22.5%22%20cy%3D%22.5%22%20r%3D%22.5%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23FFF4DA%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22.6%22%20stop-color%3D%22%23FFD9A0%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23FFD9A0%22%20stop-opacity%3D%220%22/%3E%0A%20%20%20%20%3C/radialGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%221200%22%20height%3D%22520%22%20fill%3D%22url%28%23sky%29%22/%3E%0A%20%20%3Ccircle%20cx%3D%22830%22%20cy%3D%22250%22%20r%3D%22150%22%20fill%3D%22url%28%23sun%29%22/%3E%0A%20%20%3Ccircle%20cx%3D%22830%22%20cy%3D%22250%22%20r%3D%2262%22%20fill%3D%22%23FFF1D2%22/%3E%0A%20%20%3C%21--%20distant%20island%20--%3E%0A%20%20%3Cpath%20d%3D%22M120%20300%20Q260%20230%20420%20292%20Q470%20300%20520%20300%20Z%22%20fill%3D%22%233F7F6E%22%20opacity%3D%22.75%22/%3E%0A%20%20%3Cpath%20d%3D%22M900%20305%20Q990%20270%201110%20303%20Z%22%20fill%3D%22%233F7F6E%22%20opacity%3D%22.6%22/%3E%0A%20%20%3C%21--%20sea%20--%3E%0A%20%20%3Crect%20y%3D%22298%22%20width%3D%221200%22%20height%3D%22222%22%20fill%3D%22url%28%23sea%29%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20330%20Q150%20318%20300%20330%20T600%20330%20T900%20330%20T1200%20330%22%20stroke%3D%22%23BFEDE8%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20opacity%3D%22.55%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20380%20Q150%20366%20300%20380%20T600%20380%20T900%20380%20T1200%20380%22%20stroke%3D%22%23BFEDE8%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20opacity%3D%22.4%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20440%20Q150%20426%20300%20440%20T600%20440%20T900%20440%20T1200%20440%22%20stroke%3D%22%23BFEDE8%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20opacity%3D%22.3%22/%3E%0A%20%20%3Cpath%20d%3D%22M640%20312%20L1020%20312%22%20stroke%3D%22%23FFF1D2%22%20stroke-width%3D%224%22%20opacity%3D%22.5%22/%3E%0A%20%20%3Cpath%20d%3D%22M700%20326%20L960%20326%22%20stroke%3D%22%23FFF1D2%22%20stroke-width%3D%223%22%20opacity%3D%22.4%22/%3E%0A%20%20%3C%21--%20beach%20and%20palms%20--%3E%0A%20%20%3Cpath%20d%3D%22M0%20520%20L0%20420%20Q180%20380%20380%20430%20Q470%20455%20520%20520%20Z%22%20fill%3D%22%23F1D9A8%22/%3E%0A%20%20%3Cg%20fill%3D%22none%22%20stroke%3D%22%23173A33%22%20stroke-linecap%3D%22round%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M150%20440%20Q160%20340%20205%20250%22%20stroke-width%3D%2212%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M275%20455%20Q275%20380%20300%20315%22%20stroke-width%3D%2210%22/%3E%0A%20%20%3C/g%3E%0A%20%20%3Cg%20fill%3D%22%231E4A40%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M205%20250%20Q150%20230%20100%20262%20Q160%20248%20205%20258%20Z%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M205%20250%20Q170%20205%20115%20205%20Q170%20222%20203%20256%20Z%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M205%20250%20Q235%20200%20285%20196%20Q240%20222%20208%20256%20Z%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M205%20250%20Q265%20238%20300%20270%20Q252%20258%20208%20258%20Z%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M205%20250%20Q205%20205%20230%20180%20Q215%20220%20210%20256%20Z%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M300%20315%20Q262%20300%20228%20322%20Q268%20312%20300%20322%20Z%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M300%20315%20Q280%20282%20240%20280%20Q280%20296%20298%20320%20Z%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M300%20315%20Q322%20280%20360%20278%20Q326%20298%20302%20320%20Z%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M300%20315%20Q344%20306%20368%20330%20Q332%20320%20302%20322%20Z%22/%3E%0A%20%20%3C/g%3E%0A%3C/svg%3E%0A";
+const CACHE_KEY = "wsB2BAgentFeed", BRAND_KEY = "wsB2BAgentBrand";
+const CATS = ["BUDGET","STANDARD","DELUXE","PREMIUM","LUXURY","ELITE"];
+
+let editMode = false, extras = [], addOpen = null, exSeq = 0;
+const ZW = "\u200b", tagLine = (x, n) => x + ZW.repeat(n), clean = x => String(x).replace(/\u200b+$/, "");   // extras: stops added to the itinerary
+const R = {rm:1, mt:0, wm:0};          // hotel rooms, extra mattresses, children without mattress
+let D = null, manualRooms = false, cat = "BUDGET", veh = "", xLug = 0, plan = null, planFor = -1;
+const kids = [];                      // ages of children 2–11
+const sel = {};                       // chosen hotel per category|island
+const addSel = new Set();             // add-ons ticked for the quote
+const Q = {cab:false, log:true, hot:false, mode:"log", opt:"all", which:"one", mkL:0, mkP:null, inc:null, exc:null, notes:""};
+let B = {name:"", phone:"", email:"", web:"", logo:"", cover:""};
+try{ Object.assign(B, JSON.parse(localStorage.getItem(BRAND_KEY) || "{}")); }catch(e){}
+if (B.logo && !B.logoTrim) trimLogo(B.logo, d => { B.logo = d; B.logoTrim = 1; saveBrand(); });   // tidy logos saved by older versions
+
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const inr = n => "₹" + Math.round(Number(n) || 0).toLocaleString("en-IN");
+const nice = t => String(t||"").charAt(0) + String(t||"").slice(1).toLowerCase();
+const islandName = s => ({"PORT BLAIR":"Port Blair","HAVELOCK":"Havelock","NEIL":"Neil"})[s] || nice(s);
+const val = id => Math.max(0, parseInt($("#"+id).value, 10) || 0);
+const lines = t => String(t||"").split("\n").map(s=>s.replace(/^-\s*/,"").trim()).filter(Boolean);
+const plural = (n, a, b) => n + " " + (n === 1 ? a : b);
+function saveBrand(){ try{ localStorage.setItem(BRAND_KEY, JSON.stringify(B)); }catch(e){ alertBox("Your logo or photo is too large to remember. It will still be used now."); } }
+
+/* ---------------- load prices (always live; nothing is stored on the agent's computer) ---------------- */
+const CODE_KEY = "wsB2BAgentCode";
+let loadedAt = 0;   // when prices were last fetched; an open tab refreshes itself when the agent comes back after 30 minutes
+const getCode = () => { try{ return localStorage.getItem(CODE_KEY) || ""; }catch(e){ return ""; } };
+const setCode = c => { try{ c ? localStorage.setItem(CODE_KEY, c) : localStorage.removeItem(CODE_KEY); }catch(e){} };
+try{ localStorage.removeItem(CACHE_KEY); }catch(e){}          // remove prices saved by older versions of this file
+function lockScreen(html, statusText){
+  document.body.classList.add("locked");
+  $("#status").innerHTML = esc(statusText); $("#status").classList.add("bad");
+  $("#season").textContent = "";
+  $("#main").innerHTML = `<div class="card gate">${html}</div>`;
+}
+function askCode(msg, phone){
+  const ph = phone ? ` Call or WhatsApp us on <b>${esc(phone)}</b>.` : "";
+  lockScreen(`<h2>Enter your agent code</h2>
+    <p>${msg || "Please type the agent code we sent you. You need to do this only once on this computer."}${msg ? ph : ""}</p>
+    <form id="codeForm" class="coderow"><input id="codeIn" autocomplete="off" spellcheck="false" placeholder="e.g. WSH-1023" aria-label="Agent code"><button class="btn" type="submit">Show prices</button></form>
+    ${msg ? "" : `<p class="small">Don't have a code?${ph || " Please contact us."}</p>`}`, "Agent code needed");
+  setTimeout(() => { const x = $("#codeIn"); if (x) x.focus(); }, 0);
+}
+async function load(soft){
+  let d = null, net = false;
+  if (window.DEMO_FEED) d = window.DEMO_FEED;
+  else {
+    const code = getCode();
+    if (!code){   // ask for the code; the helpline number comes from the sheet (no prices are used before a valid code)
+      askCode(); try{ const r0 = await fetch(FEED_URL, {cache:"no-store"}); const d0 = await r0.json(); const ph0 = d0.phone || (d0.contact||{}).phone || "";
+        if (ph0 && !getCode() && $("#codeIn") && !$("#codeIn").value) askCode("", ph0); }catch(e){} return; }
+    $("#status").textContent = "Connecting…"; $("#status").classList.remove("bad");
+    try{
+      const r = await fetch(FEED_URL + (FEED_URL.includes("?") ? "&" : "?") + "code=" + encodeURIComponent(code), {cache:"no-store"});
+      d = await r.json();
+    }catch(e){ net = true; }
+    if (net || !d){
+      if (soft && D && !document.body.classList.contains("locked")){ $("#status").classList.add("bad"); $("#status").innerHTML = `Could not refresh: check your internet · <button type="button" class="link refresh" id="refresh">Try again</button>`; return; }
+      lockScreen(`<h2>Prices could not be loaded</h2><p>This calculator always shows our latest live prices, so it needs an internet connection. Please check your internet and try again.</p><div class="btnrow"><button class="btn" type="button" id="retry">Try again</button></div>`, "Not connected");
+      return;
+    }
+    if (!d.ok && d.access){
+      const ph = d.phone || "";
+      if (d.access === "stopped"){ setCode(""); lockScreen(`<h2>Access stopped</h2><p>This agent code is no longer active, so prices are not shown.${ph ? ` For any questions, call or WhatsApp us on <b>${esc(ph)}</b>.` : ""}</p>`, "Access stopped"); return; }
+      if (d.access === "wrong"){ setCode(""); askCode("That code was not found. Please check it and try again.", ph); return; }
+      if (d.access === "setup"){ lockScreen(`<h2>Prices are not available right now</h2><p>Please try again a little later.${ph ? ` Questions? Call or WhatsApp us on <b>${esc(ph)}</b>.` : ""}</p>`, "Not available"); return; }
+      setCode(""); askCode(); return;
+    }
+    if (!d.ok){ lockScreen(`<h2>Prices could not be loaded</h2><p>Something went wrong on our side. Please try again a little later.</p><div class="btnrow"><button class="btn" type="button" id="retry">Try again</button></div>`, "Not loaded"); return; }
+  }
+  D = d; document.body.classList.remove("locked");
+  loadedAt = Date.now();
+  // Port Blair–Havelock-only trips (any PB-HL route, e.g. the arrival-day ones) use the PB-HL luggage cab rate from the sheet
+  const ph0 = (D.itineraries || []).find(x => x.ferryRoute === "PB-HL");
+  if (ph0) (D.itineraries || []).forEach(x => { if (x !== ph0 && /^PB-HL/.test(x.ferryRoute || "")){
+    x.luggageCab = ph0.luggageCab;
+    if (x.season && ph0.season) x.season.luggageCab = ph0.season.luggageCab;
+    if (x.off && ph0.off) x.off.luggageCab = ph0.off.luggageCab; } });
+  $("#status").classList.remove("bad");
+  $("#status").innerHTML = `Live prices · updated ${esc(D.updated)} · <button type="button" class="link refresh" id="refresh" title="Get our latest prices. Your selections stay as they are.">Refresh prices</button>`;
+  $("#season").textContent = `${D.season} · valid ${D.validFrom} – ${D.validTo}`;
+  const c = D.contact || {};
+  const ph = String(c.phone || "").trim(), digits = ph.replace(/\D/g, ""), wa = digits.length === 10 ? "91" + digits : digits;
+  if (ph){
+    $("#helpbar").innerHTML = `<div class="hb-l"><span class="hb-k">We're here to help</span><span class="hn">${esc(ph)}</span><span class="hb-s">Call or WhatsApp</span></div>
+      <p>Questions about a package, a price calculation, a group booking or a customised itinerary? Ready to confirm a booking? Call or WhatsApp us anytime.<br><b>Need help closing a deal?</b> We'll gladly join a conference call with your guest as your local co-ordinator.</p>`;
+    $("#helpbar").classList.remove("hide");
+  }
+  $("#foot").textContent = [c.name && "Questions or bookings: " + c.name, c.phone, c.email].filter(Boolean).join(" · ");
+  const keep = $("#it").value, same = soft && D.itineraries[+keep];
+  $("#it").innerHTML = D.itineraries.map((t,i)=>`<option value="${i}">${esc(t.title)}</option>`).join("");
+  if (same) $("#it").value = keep; else { planFor = -1; sameDay = false; }
+  if (soft){ planFor = same ? planFor : -1; }
+  update();
+}
+
+/* ---------------- group ---------------- */
+function group(){
+  const ad = val("ad"), c0 = val("c0");
+  const c5 = kids.filter(a => a >= 5).length, c2 = kids.filter(a => a < 5).length;
+  const seats = ad + kids.filter(a => a >= 4).length;          // children below 4 do not need a seat of their own
+  const hotelPeople = ad + c5;                                 // children below 5 usually stay free
+  return {ad, c0, c5, c2, full: ad + c5, paying: ad + kids.length, seats, hotelPeople, kidsAll: kids.length};
+}
+function guestsText(g){
+  const p = [plural(g.ad, "Adult", "Adults")];
+  if (g.kidsAll) p.push(plural(g.kidsAll, "Child", "Children") + ` (${kids.slice().sort((a,b)=>a-b).map(a=>a+" yrs").join(", ")})`);
+  if (g.c0) p.push(plural(g.c0, "Infant", "Infants"));
+  return p.join(" + ");
+}
+function guestsShort(g){
+  const p = [plural(g.ad, "Adult", "Adults")];
+  if (g.kidsAll) p.push(plural(g.kidsAll, "Child", "Children"));
+  if (g.c0) p.push(plural(g.c0, "Infant", "Infants"));
+  return p.join(" + ");
+}
+
+/* ---------------- vehicle rules ---------------- */
+/* ---------------- stops added by the agent (cost + GST, no margin) ---------------- */
+function stopVehCost(st, key, g){
+  const m = {one:["cab",1], lug:["cab",1], two:["cab",2], twolug:["cab",2], three:["cab",3], four:["cab",4], tt:["tt",1], ttlug:["tt",1], tt2:["tt",2], bus:["bus",1]}[key] || ["cab",1];
+  const c = st[m[0]];
+  return c ? c * m[1] : st.cab * Math.max(1, Math.ceil(g.seats / 5));
+}
+const ticketPeople = (t, g) => g.ad + kids.filter(a => a >= t.freeBelow).length;
+function extrasCost(it, g, key){
+  let t = 0;
+  if (it.sameDay) t += stopVehCost(it.sameDay, key, g);   // jetty to airport instead of the last Port Blair night (negative = saving)
+  for (const st of (it.sdRemoved || [])) t -= stopVehCost(st, key, g) + (st.ticket ? st.ticket.price * ticketPeople(st.ticket, g) : 0);   // return-day sightseeing taken off
+  for (const x of extras){
+    if (x.kind === "custom") t += (x.cost || 0) * (1 + (D.gst ?? 5) / 100);
+    else { const st = (D.stops || [])[x.idx]; if (!st) continue; t += stopVehCost(st, key, g) + (st.ticket ? st.ticket.price * ticketPeople(st.ticket, g) : 0); }
+  }
+  return Math.round(t);
+}
+function extrasInc(){
+  return extras.map(x => { if (x.kind === "custom") return `${x.name} (added to the itinerary)`;
+    const st = (D.stops || [])[x.idx]; return st ? `${st.name}: transfers${st.ticket ? " and " + st.ticket.name + " tickets" : ""} (added to the itinerary)` : ""; }).filter(Boolean);
+}
+
+function vehicle(it, g){
+  const s = g.seats, pr = P(it), tt = pr.ttSwap > 0, lug = pr.luggageCab, xc = pr.extraCab;
+  const LUG = "1 luggage cab (for airport and jetty transfers)";
+  const x = Math.max(0, xLug|0);                       // extra luggage cabs the agent added
+  const mk = (o) => { o.nLug = (o.nLug || 0) + x; o.add += x*lug + extrasCost(it, g, o.key); o.xlug = true;
+    o.label = o.main + (o.nLug ? ` + ${plural(o.nLug,"luggage cab","luggage cabs")} (for the luggage, during airport and jetty transfers)` : ""); return o; };
+  const pick = (opts) => opts.some(o=>o[0]===veh) ? veh : opts[0][0];
+  if (s <= 5) return mk({key:"one", main:"1 A/C cab", add:0, opts:[], msg:`<b>1 A/C cab</b> for ${plural(s,"guest","guests")}. One cab takes up to 5 guests with their luggage.`});
+  if (s === 6){
+    const opts = [["lug", `1 A/C cab + ${LUG}`], ["two", "2 A/C cabs for the whole trip"]], k = pick(opts);
+    return mk({key:k, opts, main: k==="two" ? "2 A/C cabs" : "1 A/C cab", nLug: k==="two" ? 0 : 1, add: k==="two" ? xc : lug,
+      msg:`<b>6 guests:</b> choose the vehicle below.`});
+  }
+  if (s <= 10) return mk({key:"two", main:"2 A/C cabs", add:xc, opts:[], msg:`<b>${s} guests: 2 A/C cabs</b> for the whole trip (up to 5 guests per cab).`});
+  if (s <= 17){
+    const base3 = Math.max(0, s - 15), nTT = s <= 15 ? 1 : 2, opts = [];
+    if (s <= 12) opts.push(["twolug", `2 A/C cabs + ${LUG}`]);
+    if (tt) opts.push(s <= 12 ? ["tt", "17-seat Tempo Traveller"] : ["ttlug", `17-seat Tempo Traveller + ${plural(nTT,"luggage cab","luggage cabs")} (for airport and jetty transfers)`]);
+    opts.push(["three", `3 A/C cabs${base3 ? ` + ${plural(base3,"luggage cab","luggage cabs")} (for airport and jetty transfers)` : " (5 guests each, with luggage)"}`]);
+    const k = pick(opts);
+    const L = {twolug:["2 A/C cabs", 1, xc + lug], tt:["Tempo Traveller (17 seats)", 0, pr.ttSwap], ttlug:["Tempo Traveller (17 seats)", nTT, pr.ttSwap + nTT*lug], three:["3 A/C cabs", base3, 2*xc + base3*lug]}[k];
+    return mk({key:k, opts, main: L[0], nLug: L[1], add: L[2],
+      msg:`<b>${s} guests:</b> ${opts.length > 1 ? "choose the vehicle below. " : ""}One cab takes 5 guests with their luggage; a 6th guest in a cab needs a luggage cab for the airport and jetty transfers.`});
+  }
+  if (s <= 20){
+    const opts = [["four", "4 A/C cabs (5 guests each, with luggage)"]];
+    if (pr.tt2Swap) opts.push(["tt2", "2 Tempo Travellers (17 seats each)"]);
+    if (pr.busSwap) opts.push(["bus", "26-seater bus"]);
+    const k = pick(opts);
+    const L = {tt2:["2 Tempo Travellers (17 seats each)", pr.tt2Swap], bus:["26-seater bus", pr.busSwap], four:["4 A/C cabs", 3*xc]}[k];
+    return mk({key:k, opts, main: L[0], add: L[1], msg:`<b>${s} guests:</b> choose the vehicle below.`});
+  }
+  return {key:"none", label:"", add:null, opts:[], msg:`<b>${s} guests:</b> for bigger groups, please check the price with us in advance.`};
+}
+
+/* ---------------- prices ---------------- */
+function priceOf(level, g, v){
+  let t = level.base2;
+  if (g.full >= 2){ t += (g.full - 2) * level.extraAdult + g.c2 * level.extraChild24; }
+  else { const k = 2 - g.full; t -= k * level.lessIfChild24InFirst2; t += (g.c2 - k) * level.extraChild24; }
+  if (v.add === null) return null;
+  return Math.round(t + v.add);
+}
+
+/* ---------------- hotels ---------------- */
+function hotelsFor(c, island){ return D.hotels.filter(h => h.category === c && h.island === island); }
+function chosen(c, island){
+  const list = hotelsFor(c, island); if (!list.length) return null;
+  const k = c + "|" + island;
+  if (sel[k] === undefined){ let best = 0; list.forEach((h,i)=>{ if (h.room < list[best].room) best = i; }); sel[k] = best; }   // starts on the cheapest hotel
+  return list[Math.min(sel[k], list.length-1)];
+}
+/** rate set for one night: by date when off-season dates are set in the sheet, else the sheet's switch */
+/** logistics prices: season or off-season set, by the arrival date */
+function P(it){
+  const a = arrDate();
+  if (a && D.offWindow && it.season && it.off) return inWin(a, D.offWindow) ? it.off : it.season;
+  return it;
+}
+function offLogistics(it){ return P(it) === it.off; }
+function byDate(){ return !!(D.offWindow && arrDate()); }
+function rateOn(h, dt){
+  if (dt && D.offWindow && h.season) return inWin(dt, D.offWindow) ? {...h.off, kind:"off"} : {...h.season, kind:"season"};
+  return {room:h.room, mattress:h.mattress, noMattress:h.noMattress, kind: D.hotelSeason==="OFF-SEASON" ? "off" : "season"};
+}
+function islandFirstNight(it, key){ const sp = stayPlan(it); const x = sp && sp.nights.find(n => n.isl === key); return x ? x.date : null; }
+function seasonWord(hc){
+  const k = new Set((hc ? hc.lines : []).flatMap(l => l.parts.map(p => p.kind)));
+  if (!k.size) k.add(D.hotelSeason==="OFF-SEASON" ? "off" : "season");
+  return k.size > 1 ? "season and off-season" : (k.has("off") ? "off-season" : "season");
+}
+/* ---------- far hotels: extra cab per trip that starts or ends at the hotel ---------- */
+const FAR_ROUTES = [["JOLLY BUOY",/jolly\s*buoy/],["BARATANG",/baratang|limestone/],["CHIDIYATAPU",/chi[dr]iya\s*tapu/],["WANDOOR",/wandoor/],
+  ["RADHANAGAR",/radha\s*nagar/],["KALAPATHAR",/kala\s*path?h?ar/],["MOUNT HARRIET",/mount\s*harriet/]];
+const farMatch = (f, h, isl) => f.island === isl && f.names.some(x => x && String(h.name).toLowerCase().includes(x.toLowerCase()));
+function farOf(h, isl){ return (D.far || []).find(f => (f.route || "PER TRIP") === "PER TRIP" && farMatch(f, h, isl)) || null; }
+/** night-by-night islands of the itinerary */
+function nightIsl(it){
+  const ord = (it.order && it.order.length) ? it.order : it.islands.map(x => [x[0].toUpperCase(), x[1]]);
+  const ni = []; ord.forEach(([isl, n]) => { for (let i = 0; i < n; i++) ni.push(isl); }); return ni;
+}
+const planDays = it => (plan && plan.length) ? plan : parseDays(it.days);
+/** trips that start or end at the hotel, per island, read from the day-wise plan.
+    tr = the airport / ferry-jetty transfers among them (the only trips a luggage cab makes) */
+function hotelTrips(it){
+  const ni = nightIsl(it), cnt = {}, tr = {};
+  const add = (isl, k) => { if (isl) cnt[isl] = (cnt[isl] || 0) + k; };
+  const addT = isl => { if (isl) tr[isl] = (tr[isl] || 0) + 1; };
+  planDays(it).forEach((day, d) => {
+    let cur = d > 0 ? ni[d-1] : ni[0], at = d > 0, dep = null, afterFerry = false;
+    day.items.map(x => clean(x).trim().toLowerCase()).forEach(t => {
+      if (!t) return;
+      if (/\bferry\b/.test(t)){
+        if (at){ add(cur, 1); addT(cur); at = false; } else if (dep) addT(dep);
+        dep = null; cur = ni[d] || null; afterFerry = true; return; }
+      if (/^(breakfast|lunch|dinner|evening at leisure|day at leisure|free time|overnight)/.test(t)) return;
+      const air = /airport/.test(t);
+      if (/from hotel and back/.test(t)){ add(cur, 2); dep = null; afterFerry = false; return; }
+      if (/^(hotel to|hotel pickup|early morning hotel pickup)/.test(t)){ add(cur, 1); if (air) addT(cur); dep = /jetty/.test(t) ? cur : null; at = false; afterFerry = false; return; }
+      if (/hotel drop|to hotel\b|check-in/.test(t)){ add(cur, 1); if (air || afterFerry) addT(cur); at = true; dep = null; afterFerry = false; return; }
+      if (at){ add(cur, 1); dep = /jetty/.test(t) ? cur : null; at = false; } else dep = /jetty drop/.test(t) ? dep : null;
+      afterFerry = false;
+    });
+  });
+  cnt._tr = tr;
+  return cnt;
+}
+/** sightseeing return trips on days spent at this island (Baratang, Radhanagar ...): [route, ...] */
+function farRouteTrips(it, isl){
+  const ni = nightIsl(it), out = [];
+  planDays(it).forEach((day, d) => {
+    if (ni[d] !== isl && ni[d-1] !== isl) return;
+    const txt = (day.title + " " + day.items.map(clean).join(" ")).toLowerCase(), seen = new Set();
+    FAR_ROUTES.forEach(([r, re]) => { if (re.test(txt) && !(r === "WANDOOR" && seen.has("JOLLY BUOY"))){ seen.add(r); out.push(r); } });
+  });
+  return out;
+}
+const VEH = {one:["cab",1], lug:["cab",1], two:["cab",2], twolug:["cab",2], three:["cab",3], four:["cab",4], tt:["tt",1], ttlug:["tt",1], tt2:["tt",2], bus:["bus",1], none:["cab",1]};
+function hotelTotal(c, it, rmX, mtX, wmX){
+  const rooms = rmX ?? R.rm, mt = mtX ?? R.mt, wm = wmX ?? R.wm, g = group(), sp = stayPlan(it);
+  let total = 0; const ls = [];
+  for (const [isl, n] of it.islands){
+    const key = isl.toUpperCase(), h = chosen(c, key);
+    if (!h) return null;
+    const nightDates = sp ? sp.nights.filter(x => x.isl === key).map(x => x.date) : Array(n).fill(null);
+    const parts = [];
+    nightDates.forEach(dt => { const r = rateOn(h, dt), last = parts[parts.length-1];
+      if (last && last.kind === r.kind) last.n++; else parts.push({kind:r.kind, r, n:1}); });
+    parts.forEach(p => p.amt = p.n * (rooms * p.r.room + mt * p.r.mattress + wm * (p.r.noMattress || 0)));
+    const base = parts.reduce((a,p) => a + p.amt, 0);
+    let peakN = 0, peakAmt = 0, gala = [], galaAmt = 0, closed = false;
+    if (sp){
+      const dates = sp.nights.filter(x => x.isl === key).map(x => x.date);
+      if (h.peak){ peakN = dates.filter(dt => inWin(dt, h.peak)).length; peakAmt = peakN * rooms * h.peak.amount; }
+      (h.gala||[]).forEach(gd => { if (dates.some(dt => dt.getUTCDate()===gd.d && dt.getUTCMonth()+1===gd.m)){ const a = g.ad*gd.adult + g.c5*gd.child; galaAmt += a; gala.push({...gd, amt:a}); } });
+      closed = !!(h.closed && dates.some(dt => inWin(dt, h.closed)));
+    }
+    let far = null;
+    const f = farOf(h, key);
+    if (f){
+      const ht = hotelTrips(it), trips = (ht[key] || 0), V = vehicle(it, g) || {}, [vt, vn] = VEH[V.key] || ["cab",1];
+      const lugTr = ht._tr[key] || 0, lugN = V.nLug || 0, lugT = lugTr * lugN;   // luggage cab: same extra per trip as a cab, on airport / jetty transfers only
+      const offK = parts[0] && parts[0].kind === "off" ? "off" : "season", per = f[offK][vt];
+      let amt = per == null ? 0 : trips * per, check = per == null;
+      // special return trips (e.g. Baratang from this hotel): their own extra instead of 2 trips
+      for (const r of farRouteTrips(it, key)){
+        const sp = (D.far || []).find(x => x.route === r && farMatch(x, h, key));
+        if (!sp) continue;
+        const v = sp[offK][vt];
+        if (v == null){ check = true; continue; }
+        amt += v - 2 * (per || 0);
+      }
+      const lugPer = f[offK].cab;
+      if (lugT && lugPer == null) check = true;
+      const lugAmt = Math.round(lugT * (lugPer || 0)), vehAmt = Math.round(Math.max(0, amt) * vn);
+      far = {trips, check, amt: check ? 0 : vehAmt + lugAmt, vehAmt, lugAmt, vt, lugT, lugTr, lugN};
+    }
+    const amt = base + peakAmt + galaAmt + (far ? far.amt : 0);
+    total += amt; ls.push({isl:key, n, h, amt, base, parts, peakN, peakAmt, gala, galaAmt, closed, far});
+  }
+  return {total, lines: ls, dated: !!sp};
+}
+function suggestRooms(g){
+  const p = g.hotelPeople;
+  if (p <= 2) return {rm:1, mt:0};
+  return {rm: Math.floor(p / 2), mt: p % 2};
+}
+function roomOptions(g){
+  const p = g.hotelPeople, out = [], seen = new Set();
+  const add = (rm, mt, label, why, wm = 0) => { const k = rm + ":" + mt + ":" + wm; if (rm < 1 || mt < 0 || mt > rm || wm > rm || seen.has(k)) return; seen.add(k); out.push({rm, mt, wm, label, why}); };
+  // children 5–11 sharing the parents' bed (without mattress), one per room
+  if (g.c5 > 0){
+    const a = g.ad, rm = Math.max(1, Math.floor(a/2)), mt = a >= 2 ? a % 2 : 0;
+    if (g.c5 <= rm) add(rm, mt, plural(rm,"room","rooms") + (mt ? " + 1 extra mattress" : "") + " + " + plural(g.c5,"child","children") + " without mattress", "child shares the bed, usually cheapest", g.c5);
+  }
+  if (p <= 2){ if (out.length) add(1, 0, "1 room", "2 per room"); return out; }
+  add(Math.floor(p/2), p%2, plural(Math.floor(p/2),"room","rooms") + (p%2 ? " + 1 extra mattress" : ""), "2 per room" + (p%2 ? ", 3rd person on a mattress" : ""));
+  add(Math.ceil(p/3), p - 2*Math.ceil(p/3), plural(Math.ceil(p/3),"room","rooms") + (p - 2*Math.ceil(p/3) ? " + " + plural(p - 2*Math.ceil(p/3),"extra mattress","extra mattresses") : ""), "3 per room, usually cheapest");
+  add(Math.ceil(p/2), 0, plural(Math.ceil(p/2),"room","rooms"), "no extra mattress");
+  return out;
+}
+function roomsText(){ return plural(R.rm,"room","rooms") + (R.mt ? " + " + plural(R.mt,"extra mattress","extra mattresses") : "") + (R.wm ? " + " + plural(R.wm,"child","children") + " without mattress" : ""); }
+
+
+/* ---------------- dates, peak and gala ---------------- */
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function arrDate(){ const v = ($("#arr")||{}).value; if (!v) return null; const [y,m,d] = v.split("-").map(Number); return new Date(Date.UTC(y, m-1, d)); }
+const addDays = (dt, n) => new Date(dt.getTime() + n*86400000);
+const fmt = dt => dt.getUTCDate() + " " + MON[dt.getUTCMonth()];
+const fmtY = dt => fmt(dt) + " " + dt.getUTCFullYear();
+function inWin(dt, w){
+  if (!w || !w.from || !w.to) return false;
+  const v = (dt.getUTCMonth()+1)*100 + dt.getUTCDate(), a = w.from[1]*100 + w.from[0], b = w.to[1]*100 + w.to[0];
+  return a <= b ? (v >= a && v <= b) : (v >= a || v <= b);
+}
+const winTxt = w => w ? `${w.from[0]} ${MON[w.from[1]-1]} – ${w.to[0]} ${MON[w.to[1]-1]}` : "";
+function parseDMY(t){ const m = String(t||"").match(/(\d{1,2})\s*([A-Za-z]{3})[a-z]*\s*(\d{4})/); if (!m) return null; const i = MON.findIndex(x=>x.toLowerCase()===m[2].toLowerCase()); return i<0?null:new Date(Date.UTC(+m[3], i, +m[1])); }
+/** night-by-night stay: [{isl, date}] and ferry crossings [{sector, date}] */
+function stayPlan(it){
+  const a = arrDate(); if (!a) return null;
+  const order = (it.order && it.order.length) ? it.order : it.islands.map(x=>[x[0].toUpperCase(), x[1]]);
+  const nights = [], ferries = []; let d = a, prev = "PORT BLAIR";   // guests always land at Port Blair
+  const code = {"PORT BLAIR":"PB","HAVELOCK":"HL","NEIL":"NEIL"};
+  for (const [isl, n] of order){
+    if (prev && prev !== isl) ferries.push({sector: code[prev] + "-" + code[isl], date: d});
+    for (let i=0;i<n;i++){ nights.push({isl, date:d}); d = addDays(d, 1); }
+    prev = isl;
+  }
+  if (prev !== "PORT BLAIR") ferries.push({sector: code[prev] + "-PB", date: d});   // flies out from Port Blair
+  return {nights, ferries, depart: d};
+}
+function makruzzPeak(o, g, sp){
+  if (!sp || !D.makruzzPeak || !o.makruzz) return {amt:0, n:0};
+  const hit = sp.ferries.filter(f => o.makruzz.includes(f.sector) && inWin(f.date, D.makruzzPeak.window)).length;
+  return {amt: Math.round(hit * g.paying * D.makruzzPeak.perPerson), n: hit};
+}
+function validityWarn(sp){
+  if (!sp) return "";
+  const vf = parseDMY(D.validFrom), vt = parseDMY(D.validTo), first = sp.nights[0].date, last = sp.depart;
+  const out = sp.nights.some(x => ((vf && x.date < vf) || (vt && x.date > vt)) && !(D.offWindow && inWin(x.date, D.offWindow)));
+  if (out) return `These dates are outside ${D.validFrom} – ${D.validTo}. Prices may be different; please check with us.`;
+  return "";
+}
+
+/* ---------------- itinerary plan (editable) ---------------- */
+function parseDays(t){
+  return String(t||"").split("\n").reduce((a, line) => {
+    line = line.trim(); if (!line) return a;
+    if (/^DAY\s*\d+/i.test(line)){ const p = line.split("|").map(s=>s.trim()); a.push({title:p.slice(1).join(" | "), items:[]}); }
+    else if (a.length) a[a.length-1].items.push(line.replace(/^-\s*/,""));
+    return a;
+  }, []);
+}
+let sameDay = false;
+/** can this itinerary end with a same-day flight after the last ferry back to Port Blair? */
+function sdInfo(it){
+  const o = it.order || [];
+  if (o.length < 2) return {ok:false};
+  const last = o[o.length-1], prev = o[o.length-2];
+  if (last[0] !== "PORT BLAIR" || last[1] !== 1 || prev[0] === "PORT BLAIR") return {ok:false};
+  const st = (D.stops || []).find(x => x.island === "SPECIAL" && /same-day/i.test(x.name));
+  if (!st) return {ok:false};
+  const days = parseDays(it.days), rd = days.length - 2;
+  if (rd < 0) return {ok:false};
+  const fi = days[rd].items.findIndex(x => /ferry to port blair/i.test(x));
+  if (fi < 0) return {ok:false};
+  // whatever was planned in Port Blair after the ferry is taken off (matched to the STOPS tab, so its cost comes off too)
+  const N = x => String(x).toLowerCase().replace(/[\u2018\u2019]/g,"'").replace(/\s+/g," ").trim();
+  const placesOf = name => String(name).split("+").map(x => N(x.replace(/\(.*?\)/g,""))).filter(Boolean);
+  const after = days[rd].items.slice(fi+1).map(clean).filter(x => !/^(evening at leisure|jetty pickup and hotel drop|hotel drop)\b/i.test(x.trim()));
+  const txt = N(after.join(" | "));
+  const cand = (D.stops || []).filter(x => x.island === "PORT BLAIR").map(x => ({st:x, pl:placesOf(x.name)})).filter(c => c.pl.length && c.pl.every(pl => txt.includes(pl))).sort((a,b) => b.pl.length - a.pl.length);
+  const used = new Set(), removed = [];
+  for (const c of cand) if (c.pl.every(pl => ![...used].some(u => u.includes(pl) || pl.includes(u)))){ c.pl.forEach(pl => used.add(pl)); removed.push(c); }
+  const known = after.every(x => [...used].some(pl => N(x).includes(pl)) || /\b(hotel|jetty|pickup|drop)\b/i.test(x));
+  if (!known) return {ok:false, show:true};
+  return {ok:true, rd, fi, st, removed:removed.map(c => c.st), places:[...used], N};
+}
+/** the itinerary as it will be sold: with "fly out the same day" applied when ticked */
+function ITX(idx){
+  const it = D.itineraries[idx]; if (!sameDay) return it;
+  const s = sdInfo(it); if (!s.ok) return it;
+  const days = parseDays(it.days), r = days[s.rd];
+  r.items = r.items.slice(0, s.fi+1).concat(["Jetty pickup and airport drop"]);
+  r.title = r.title.replace(/\s*·.*$/, "") + " · departure";
+  days.pop();
+  const n = (parseInt(it.nights) || 1) - 1;
+  const newTxt = s.N(days.map(d => d.title + " " + d.items.join(" ")).join(" "));
+  const gone = s.places.filter(pl => !newTxt.includes(pl));
+  const incl = String(it.inclusions || "").split("\n").filter(l => !gone.some(pl => s.N(l).includes(pl))).join("\n");
+  return {...it,
+    title: it.title.replace(/(\d+) Nights (\d+) Days/i, (m,a,b) => `${a-1} Nights ${b-1} Days`) + " (flying out on the return day)",
+    nights: `${n} night${n===1?"":"s"}`,
+    stay: it.stay.replace(/Port Blair (\d+) nights?/i, (m,a) => +a-1 > 0 ? `Port Blair ${a-1} night${a-1===1?"":"s"}` : "").replace(/^\s*·\s*|\s*·\s*$/g,"").replace(/·\s*·/g,"·"),
+    days: days.map((d,i) => `DAY ${i+1} | ${d.title}\n` + d.items.map(x => "- " + x).join("\n")).join("\n"),
+    order: it.order.slice(0, -1),
+    islands: it.islands.map(([nm,k]) => [nm, nm.toUpperCase()==="PORT BLAIR" ? k-1 : k]).filter(x => x[1] > 0),
+    inclusions: incl,
+    sameDay: s.st, sdRemoved: s.removed};
+}
+/** stops added on a departure day go before the airport drop */
+function addLines(i, ls){ const it = plan[i].items, k = it.findIndex(x => /airport drop/i.test(clean(x))); if (k < 0) it.push(...ls); else it.splice(k, 0, ...ls); }
+/** on a same-day flight day there is no hotel to go back to */
+function sdLine(i, x){
+  if (!plan[i].items.some(y => /^jetty pickup and airport drop/i.test(clean(y)))) return x;
+  return x.replace(/\s*\(from hotel and back\)/i, "").replace(/^hotel to /i, "Drop at ").replace(/^(jetty pickup and hotel drop|hotel drop)$/i, "").replace(/^return and hotel drop$/i, "Return").replace(/^early morning hotel pickup for /i, "Early start for ");
+}
+function ensurePlan(i){ if (planFor !== i){ plan = parseDays(ITX(i).days); planFor = i; extras = []; addOpen = null; } }
+function planText(withDates, noBreakfast){ const a = withDates ? arrDate() : null; return plan.map((d,i)=>`DAY ${i+1} | ${a ? fmtY(addDays(a,i)) + " | " : ""}${d.title}\n` + d.items.filter(x => !(noBreakfast && /^breakfast\b/i.test(x.trim()))).map(x=>"- "+clean(x)).join("\n")).join("\n"); }
+function planEdited(){ return planText().trim() !== ITX(planFor).days.trim().replace(/\r/g,""); }
+
+/* ---------------- render ---------------- */
+function update(){
+  if (!D) return;
+  const idx = +$("#it").value || 0, it = ITX(idx), g = group();
+  ensurePlan(idx);
+  renderKids();
+  const v = vehicle(it, g);
+  // left panel: vehicle and rooms
+  $("#vehBox").innerHTML = v.msg + (g.kidsAll && kids.some(a=>a<4) ? `<br><small>Children below 4 sit with an adult and do not count for the vehicle.</small>` : "");
+  { const xh = (g.seats > 12 ? `<p class="small" style="margin:8px 0 0"><b>Group of more than 12?</b> If you are not sure about the number of vehicles or luggage cabs, call us${(D.contact||{}).phone ? " on " + esc(D.contact.phone) : ""} and we will help you work it out.</p>` : "") + (v.xlug ? `<div class="xlug"><div class="stepper"><button type="button" data-xl="-1" aria-label="Fewer extra luggage cabs">−</button><span class="num">${xLug}</span><button type="button" data-xl="1" aria-label="More extra luggage cabs">+</button></div><span><b>Extra luggage cab</b> (optional)</span></div><p class="small">The vehicle selected above${v.nLug - xLug > 0 ? `, including its ${plural(v.nLug - xLug,"luggage cab","luggage cabs")},` : ""} is already included in the prices. Add an extra luggage cab here <b>only</b> if the guests have more luggage than usual.</p>` : ""); if ($("#xLugBox").innerHTML !== xh) $("#xLugBox").innerHTML = xh; }
+  { const vh = v.opts.map(o=>`<label class="chk"><input type="radio" name="veh" value="${o[0]}" ${o[0]===v.key?"checked":""}> <span>${esc(o[1])}</span></label>`).join(""); if ($("#vehOpts").innerHTML !== vh) $("#vehOpts").innerHTML = vh; }
+  const sug = suggestRooms(g);
+  if (!manualRooms){ const o = roomOptions(g)[0]; if (o && o.wm){ R.rm = o.rm; R.mt = o.mt; R.wm = o.wm; } else { R.rm = sug.rm; R.mt = sug.mt; R.wm = 0; } }
+
+  if (g.paying < 2){ $("#main").innerHTML = summaryBar(it,g,v) + `<div class="card warn">Please add at least 2 travellers aged 2 or above.</div>`; return; }
+  { const spx = stayPlan(it);
+    if (spx && D.offWindow && D.offReady === false && spx.nights.concat([{date: spx.depart}]).some(n => inWin(n.date, D.offWindow))){
+      const ph = (D.contact||{}).phone;
+      $("#main").innerHTML = summaryBar(it,g,v) + itinCard(it,g) + `<div class="card warn"><b>Off-season rates are not ready yet.</b> Your dates fall in the off-season (${esc(winTxt(D.offWindow))}). Please ${ph ? "call or WhatsApp us on " + esc(ph) : "contact us"} for the price for these dates.</div>`;
+      return;
+    } }
+  if (v.add === null){ $("#main").innerHTML = summaryBar(it,g,v) + itinCard(it,g) + `<div class="card warn">For more than 20 guests, groups or any customisation, please check the price with us in advance.</div>`; return; }
+
+  const gt = guestsShort(g);
+  const cabP = priceOf(P(it).cabLevel, g, v), sp = stayPlan(it);
+  const opts = P(it).options.map(o => { const mk = makruzzPeak(o, g, sp); return {...o, mk, total: priceOf(o, g, v) + mk.amt}; });
+  const incl = lines(it.inclusions).filter(x=>!/^taxes/i.test(x)).flatMap(x => vehLine(x, v)).concat(extrasInc());
+  const hc = hotelTotal(cat, it);
+
+  $("#main").innerHTML = `
+    ${summaryBar(it,g,v)}
+    ${itinCard(it,g)}
+    <section class="card">
+      <div class="eyebrow">Your B2B prices · ${esc(gt)}</div>
+      <h2>Cab only package, or logistics package</h2>
+      <p class="lead">Every price below is the <b>total for ${esc(gt)}</b>, taxes included, with <b>${esc(v.label)}</b>. Hotels are separate (next section).</p>
+      <div class="prices">
+        <article class="pc cab">
+          <div class="eyebrow">Cab only package</div>
+          <h3>Cab + entry tickets + all other inclusions</h3>
+          <div class="sub">Everything in the package, except ferry tickets and hotels.</div>
+          <div class="price num">${inr(cabP)}</div>
+          <div class="for">Total for ${esc(gt)}</div>
+          <div class="inc">Includes</div>
+          <ul>${incl.map(x=>`<li>${esc(x)}</li>`).join("")}<li>Taxes</li></ul>
+          <div class="inc">Not included</div>
+          <div class="nolist"><div class="hl">Ferry tickets and hotels: you book them.</div><div class="hl">Anything not mentioned in the inclusions.</div></div>
+        </article>
+        ${opts.map(o=>`
+        <article class="pc">
+          <div class="eyebrow">Logistics package · Option ${o.no}</div>
+          <h3>Cab + ferries + entry tickets + all other inclusions</h3>
+          <div class="sub">Everything in the package, except hotels.</div>
+          <div class="price num">${inr(o.total)}</div>
+          <div class="for">Total for ${esc(gt)}</div>
+          <div class="fbox">
+            <div class="inc">Ferries you get with Option ${o.no}</div>
+            <div class="sub">${esc(o.name)}</div>
+            <ul class="fer">${o.legs.map(l=>`<li>${esc(l)}</li>`).join("")}</ul>
+            ${o.mk.amt ? `<div class="pk">Includes Makruzz peak surcharge ${inr(o.mk.amt)} (${plural(o.mk.n,"sector","sectors")} on peak dates)</div>` : ""}
+          </div>
+          <div class="inc">Includes</div>
+          <ul>${incl.map(x=>`<li>${esc(x)}</li>`).join("")}<li>Ferry tickets on all sectors (as above)</li><li>Taxes</li></ul>
+          <div class="inc">Not included</div>
+          <div class="nolist"><div class="hl">Hotel booking is optional: see the hotel section below.</div><div class="hl">Anything not mentioned in the inclusions.</div></div>
+        </article>`).join("")}
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="eyebrow">Optional · direct hotel rates</div>
+      <h2>Hotels</h2>
+      <p class="lead">Hotel rates with breakfast, taxes included. First choose the rooms, then a category, then change a hotel on any island if you like.</p>
+      ${roomsBlock(it, g)}
+      <div class="cats">${CATS.filter(c=>D.hotels.some(h=>h.category===c)).map(c=>`<button type="button" class="${c===cat?"on":""}" data-cat="${c}">${nice(c)}</button>`).join("")}</div>
+      ${hc ? hc.lines.map(l=>{
+        const list = hotelsFor(cat, l.isl), k = cat + "|" + l.isl, rooms = R.rm, mt = R.mt, wm = R.wm;
+        return `<div class="isl">
+          <div class="isl-h"><span>${islandName(l.isl)} · ${plural(l.n,"night","nights")}</span><span class="num">${inr(l.amt)}</span></div>
+          <select data-hk="${esc(k)}" aria-label="Hotel in ${islandName(l.isl)}">${list.map((h,i)=>`<option value="${i}" ${i===sel[k]?"selected":""}>${esc(h.name)} · ${inr(rateOn(h, islandFirstNight(it, l.isl)).room)} per night${h.peak?` · peak +${inr(h.peak.amount)}`:""}${farOf(h, l.isl)?" · + extra cab":""}${h.gala&&h.gala.length?" · gala dinner":""}</option>`).join("")}</select>
+          ${l.parts.map(p=>`<div class="isl-r num">${byDate()?`<b>${p.kind==="off"?"Off-season":"Season"} rate:</b> `:""}Room ${inr(p.r.room)} per night${rooms>1?` × ${rooms} rooms`:""}${mt?` + extra mattress ${inr(p.r.mattress)} per night${mt>1?` × ${mt}`:""}`:""}${wm?` + child without mattress ${inr(p.r.noMattress)} per night${wm>1?` × ${wm}`:""}`:""} × ${plural(p.n,"night","nights")} = ${inr(p.amt)}${mt?"":` · Extra mattress, if needed: ${inr(p.r.mattress)} per night`}</div>`).join("")}${l.h.note?`<div class="isl-r">${esc(l.h.note)}</div>`:""}
+          ${l.peakAmt ? `<div class="pk">Peak surcharge: ${inr(l.h.peak.amount)} per room per night (${winTxt(l.h.peak)}) × ${plural(rooms,"room","rooms")} × ${plural(l.peakN,"peak night","peak nights")} = ${inr(l.peakAmt)}</div>` : ""}
+          ${l.gala.map(gd=>`<div class="pk">Compulsory gala dinner ${gd.d} Dec: ${plural(g.ad,"adult","adults")} × ${inr(gd.adult)}${g.c5?` + ${plural(g.c5,"child","children")} (5–11) × ${inr(gd.child)}`:""} = ${inr(gd.amt)}</div>`).join("")}
+          ${l.far ? `<div class="warn farw">⚠ This hotel is outside the main area: ${l.far.check ? `extra cab charge applies for the ${l.far.vt === "tt" ? "Tempo Traveller" : l.far.vt === "bus" ? "26-seater bus" : "cab"}. Please check the amount with us.` : `extra cab charge <b>${inr(l.far.amt)}</b> for the trips to and from this hotel in this itinerary${l.far.lugAmt ? ` (${l.far.vt === "tt" ? "Tempo Traveller" : l.far.vt === "bus" ? "bus" : "cab"} ${inr(l.far.vehAmt)} + ${l.far.lugN > 1 ? `${l.far.lugN} luggage cabs` : "luggage cab"} ${inr(l.far.lugAmt)} for ${plural(l.far.lugTr,"airport / jetty transfer","airport / jetty transfers")})` : ""}. It's added to the complete package.`} If you book this hotel yourself and take only our logistics, the same extra charge${l.far.check ? "" : " shown here"} applies on the logistics cost.</div>` : ""}
+          ${l.closed ? `<div class="warn">This hotel is not available for stays on ${esc(winTxt(l.h.closed))}. Please choose another hotel.</div>` : ""}
+          ${!hc.dated && (l.h.peak || (l.h.gala||[]).length) ? `<div class="small">Has peak dates${l.h.peak?` (${winTxt(l.h.peak)}, +${inr(l.h.peak.amount)} per room per night)`:""}${(l.h.gala||[]).length?" and a gala dinner":""}. Add the arrival date to include them.</div>` : ""}
+        </div>`;}).join("") + `
+        <table class="htable num">
+          ${hc.lines.map(l=>`<tr><td>${islandName(l.isl)} · ${plural(l.n,"night","nights")}${l.peakAmt||l.galaAmt?` <small>(incl. ${[l.peakAmt?"peak surcharge":"", l.galaAmt?"gala dinner":""].filter(Boolean).join(" and ")})</small>`:""}</td><td>${inr(l.amt)}</td></tr>`).join("")}
+          <tr class="tot"><td>${nice(cat)} hotels total · ${esc(it.nights)}</td><td>${inr(hc.total)}</td></tr>
+        </table>
+        <div class="hnote"><b>Note:</b> <b>Hotel prices are ${seasonWord(hc)} rates, for reference. Rates may change, so please check with the hotel before confirming.</b></div>
+        <div class="note" style="margin-top:12px"><b>How to book these hotels</b>
+          <ol>
+            <li><b>Book directly:</b> contact the hotel to check availability for your dates and get the season rate.</li>
+            <li><b>Or book through us:</b> we email the hotel on your behalf, with you in CC.</li>
+            <li>Either way, <b>you pay each hotel separately, directly to the hotel</b>, and share the payment screenshot to get the confirmation.</li>
+          </ol>
+        </div>
+        <div class="sums">
+          ${opts.map(o=>`<div class="sum"><span><b>${nice(cat)} hotels</b> ${inr(hc.total)}</span><span class="t num"><i>=</i>${inr(hc.total + o.total)}</span><span><span class="pl">+</span> Logistics Option ${o.no} <small>(cab + ferries + entry tickets)</small> ${inr(o.total)}</span></div>`).join("")}
+        </div>` : `<p class="note">No ${nice(cat)} hotels listed for every island of this itinerary. Please ask us.</p>`}
+    </section>
+
+
+
+    ${quoteCard(it, g)}`;
+}
+
+function vehLine(x, v){
+  if (!/^1 A\/C cab/i.test(x)) return [x];
+  const tt = /^(tt|bus)/.test(v.key);
+  const main = (v.key === "one" ? x : x.replace(/^1 A\/C cab( \([^)]*\))?/i, (v.main || "1 A/C cab") + (tt ? "" : " (Ertiga / Sedan / Mahindra SUV or similar)")));
+  return v.nLug ? [main, `${plural(v.nLug,"luggage cab","luggage cabs")} for the luggage, during airport and jetty transfers`] : [main];
+}
+function roomCheck(g){
+  const need = g.hotelPeople, beds = 2*R.rm + R.mt + R.wm;
+  if (R.mt > R.rm) return {bad:true, msg:`Only 1 extra mattress per room: ${plural(R.rm,"room","rooms")} can take at most ${plural(R.rm,"extra mattress","extra mattresses")}. Add a room.`};
+  if (R.wm > R.rm) return {bad:true, msg:`Only 1 child without mattress per room: ${plural(R.rm,"room","rooms")} can take at most ${plural(R.rm,"child","children")} without mattress. Add a room.`};
+  if (R.wm > g.c5) return {bad:true, msg:`"Child without mattress" is only for children aged 5–11. You have ${plural(g.c5,"child","children")} of that age.`};
+  if (beds < need) return {bad:true, msg:`Not enough beds: ${plural(need,"guest","guests")} aged 5+ but only ${beds} places (${roomsText()}). Add a room or an extra mattress.`};
+  if (2*R.rm > need + 1 || beds > need + R.rm) return {bad:false, msg:`More rooms or mattresses than needed for ${plural(need,"guest","guests")} aged 5+. That is fine if the guests want it.`};
+  return null;
+}
+function roomsBlock(it, g){
+  const sug = suggestRooms(g), ropts = roomOptions(g);
+  const stepper = (k, label, sub) => `<div class="cnt"><span>${label}${sub?` <small>${sub}</small>`:""}</span><div class="step" data-k="${k}"><button type="button" data-d="-1" aria-label="Less: ${label}">−</button><input id="${k}" value="${R[k]}" inputmode="numeric" aria-label="${label}"><button type="button" data-d="1" aria-label="More: ${label}">+</button></div></div>`;
+  return `<div class="roomsbox">
+    <div class="rb-h"><span class="lbl">Rooms for ${esc(guestsText(g))}</span>${manualRooms?`<button type="button" class="link" id="autoRoomsBtn">Use the suggestion again</button>`:""}</div>
+    <div class="auto">Suggested: <b>${esc(ropts.length ? ropts[0].label : plural(sug.rm,"room","rooms") + (sug.mt ? " + " + plural(sug.mt,"extra mattress","extra mattresses") : ""))}</b>${g.c2||g.c0?`<br><small>Children below 5 usually stay free; check with the hotel.</small>`:""}</div>
+    ${ropts.length > 1 ? `<div class="ropts">${ropts.map(o=>{ const hc = hotelTotal(cat, it, o.rm, o.mt, o.wm);
+        return `<button type="button" class="ropt ${o.rm===R.rm&&o.mt===R.mt&&o.wm===R.wm?"on":""}" data-rooms="${o.rm}:${o.mt}:${o.wm}"><b>${esc(o.label)}</b><span>${esc(o.why)}${hc?` · ${nice(cat)} hotels ${inr(hc.total)}`:""}</span></button>`; }).join("")}</div><small>Tap a choice, or type your own numbers below.</small>` : ""}
+    ${(()=>{ const c = roomCheck(g); return c ? `<div class="${c.bad?"warn":"auto"}">${esc(c.msg)}</div>` : ""; })()}
+    <div class="rsteps">
+      ${stepper("rm","Rooms","")}
+      ${stepper("mt","Extra mattress","3rd person in a room")}
+      ${stepper("wm","Child without mattress","5–11 yrs, shares the bed")}
+    </div>
+    <p class="small" style="margin:8px 0 0">A room can take 2 guests, plus 1 extra mattress and 1 child without mattress. Some hotels, or their smaller starting room types, may not allow a 3rd or 4th person in a room. If in doubt, check the hotel's extra-person policy before confirming.</p>
+  </div>`;
+}
+function summaryBar(it, g, v){
+  return `<div class="summary" id="sumBar"><span class="t">Your selection:</span>
+    <span class="chip">${esc(it.title)}</span>
+    ${(()=>{ const sp = stayPlan(it); return sp ? `<span class="chip">Dates: <b>${fmt(sp.nights[0].date)} – ${fmtY(sp.depart)}</b></span>` : ""; })()}
+    ${offLogistics(it)?`<span class="chip"><b>Off-season prices</b></span>`:""}
+    <span class="chip">Guests: <b>${esc(guestsText(g))}</b></span>
+    ${v.label?`<span class="chip">Vehicle: <b>${esc(v.label)}</b></span>`:""}
+    <span class="chip">Hotel: <b>${esc(roomsText())}</b></span></div>`;
+}
+
+function itinCard(it, g){
+  return `<section class="card">
+    <div class="eyebrow">${esc(it.route)}</div>
+    <h2>${esc(it.title)}</h2>
+    <div class="facts"><span>Stay: <b>${esc(it.stay)}</b></span></div>
+    ${(()=>{ const s = sdInfo(D.itineraries[planFor]);
+      if (s.ok){ const rm = s.removed.map(x => x.name).join(", ");
+        return `<div class="sdbox"><label class="chk"><input type="checkbox" id="sameDay" ${sameDay?"checked":""}> <span><b>Guests fly out the same day they come back to Port Blair</b> (no last night in Port Blair)</span></label>
+        ${sameDay ? `<p>The last day becomes: ferry to Port Blair, jetty pickup and airport drop. The last Port Blair hotel night${rm ? `, ${esc(rm)}` : ""} and the hotel transfers are taken off the price. Any stop you add on that day is charged extra.</p>
+        <p class="sdwarn"><b>Before you confirm:</b> check the guest's flight time and the ferry's arrival time at Port Blair. Keep at least 2 hours between the ferry reaching Port Blair and the flight. Not sure? Check with us first.</p>` : ""}</div>`; }
+      if (s.show) return `<p class="small">Flying out on the return day is not set up for this itinerary yet. Please call us for it.</p>`;
+      return ""; })()}
+    ${(()=>{ const sp = stayPlan(it); if (!sp) return `<div class="datebar">Add the arrival date (left) to see the dates, and to include peak surcharges and gala dinners.</div>`;
+      const w = validityWarn(sp); return `<div class="datebar">Travel: <b>${fmtY(sp.nights[0].date)} – ${fmtY(sp.depart)}</b>${w?`</div><div class="warn" style="margin-top:8px">${esc(w)}`:""}</div>`; })()}
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-top:8px">
+      <span class="lbl">Day-wise itinerary</span>
+      <button type="button" class="btn sec" id="editToggle" style="padding:7px 14px;font-size:14px">${editMode ? "Done editing" : "Edit itinerary for your guest"}</button>
+    </div>
+    ${editMode ? `<p class="lead" style="margin-top:6px">Click a day title to rename it and <b>×</b> to remove a stop. Use <b>+ Add a stop</b> to add one from the list: its transfers and tickets are added to the prices for your group. Not in the list? Choose "Another place" and type its cost. Your changes go into the quote.</p>
+      <div class="checkfirst"><b>Please check with us before you confirm any change with your guest.</b> You can edit the itinerary, add your own places or extra stops, but not every plan works on the ground: some places need a full day of their own (for example Baratang), and boat trips run only at certain times (for example Jolly Buoy, morning only). Stops marked ⚠ have a timing note. ${(D.contact||{}).phone ? `Call or WhatsApp us on <b>${esc(D.contact.phone)}</b> and we will confirm it can be done.` : "Call or WhatsApp us and we will confirm it can be done."}</div>` : `<div class="dview">${plan.map((d,i)=>`<div><b>Day ${i+1}${arrDate()?" · "+fmt(addDays(arrDate(),i)):""}</b> · <strong>${esc(d.title)}</strong><p>${d.items.map(x=>esc(clean(x))).join(" · ")}</p></div>`).join("")}</div>`}
+    <div class="days ${editMode ? "" : "hide"}">${plan.map((d,i)=>`
+      <div class="day">
+        <div class="day-h"><b>Day ${i+1}</b><input data-dt="${i}" value="${esc(d.title)}" aria-label="Day ${i+1} title"></div>
+        <ul>${d.items.map((x,j)=>`<li><span>${esc(clean(x))}${extras.some(e=>e.day===i&&e.lines.includes(x))?` <em class="addtag">added</em>`:""}</span><button type="button" class="x" data-rm="${i}:${j}" aria-label="Remove ${esc(clean(x))}">×</button></li>`).join("")}</ul>
+        ${extras.filter(e=>e.day===i && e.kind==="stop" && (D.stops[e.idx]||{}).note).map(e=>`<div class="tnote"><b>${esc(D.stops[e.idx].name)}:</b> ${esc(D.stops[e.idx].note)}</div>`).join("")}
+        <div class="addrow"><select data-sp="${i}" aria-label="Add a stop to day ${i+1}"><option value="">+ Add a stop…</option>${["PORT BLAIR","HAVELOCK","NEIL"].map(isl=>{ const ss=(D.stops||[]).map((st,k)=>[st,k]).filter(([st])=>st.island===isl); return ss.length?`<optgroup label="${islandName(isl)}">${ss.map(([st,k])=>`<option value="${k}">${esc(st.name)}${st.note ? " ⚠" : ""}</option>`).join("")}</optgroup>`:""; }).join("")}<optgroup label="Not in the list"><option value="custom">Another place, with its cost…</option><option value="text">A note only, no cost…</option></optgroup></select></div>
+        ${addOpen && addOpen.day===i ? `<div class="custrow">${addOpen.type==="custom"
+          ? `<input id="cxName" placeholder="Place, e.g. Mount Harriet" aria-label="Place"><input id="cxCost" type="number" min="0" step="50" placeholder="Cost for your group, ₹" aria-label="Cost for your group"><button type="button" data-addcx="${i}">Add</button><small>Cab cost for your whole group: both ways if you go and come back, one way if it is on the way. Taxes are added.</small>`
+          : `<input id="cxName" placeholder="For example: lunch stop at a local restaurant" aria-label="Note"><button type="button" data-addcx="${i}">Add</button>`}</div>` : ""}
+      </div>`).join("")}</div>
+    ${planEdited() ? `<div class="edited"><span><b>You changed the itinerary.</b> ${extras.length ? "Stops added from the list, or with their cost, are included in the prices below (taxes included). " : ""}Removing a stop does not lower the price. For bigger changes, please confirm the price with us before sending.</span><button type="button" id="resetPlan">Undo all changes</button></div>` : ""}
+  </section>`;
+}
+
+function quoteCard(it, g){
+  const incDef = defaultInc(), excDef = defaultExc();
+  return `<section class="card quote" id="quoteCard">
+    <div class="eyebrow">Last step</div>
+    <h2>Make your quote</h2>
+    <p class="lead">Optional. Make a quote for your guest with <b>your prices</b> (your markup added). It never shows our B2B prices or our name. You can skip every field below; the quote still comes out complete.</p>
+
+    <div class="qstep"><span class="qn">1</span><div class="field"><span class="lbl">What are you sending your guest?</span>
+      <label class="chk"><input type="radio" name="qmode" value="log" ${Q.mode==="log"?"checked":""}> <span><b>Logistics package only</b> (cab + ferries + entry tickets; the guest books hotels on their own)</span></label>
+      <label class="chk"><input type="radio" name="qmode" value="pkg" ${Q.mode==="pkg"?"checked":""}> <span><b>Complete package</b> (logistics + hotels)</span></label>
+    </div></div>
+
+    <div class="qstep"><span class="qn">2</span><div class="field"><span class="lbl">Which logistics option?</span>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center">
+        <select id="qOpt" style="width:auto"><option value="all" ${Q.opt==="all"?"selected":""}>All options (guest chooses)</option>${P(it).options.map(o=>`<option value="${o.no}" ${String(Q.opt)===String(o.no)?"selected":""}>Only Option ${o.no}: ${esc(o.name)}</option>`).join("")}</select>
+        ${Q.mode==="pkg"?`<select id="qWhich" style="width:auto"><option value="one" ${Q.which==="one"?"selected":""}>${nice(cat)} hotels, as selected above</option><option value="all" ${Q.which==="all"?"selected":""}>All hotel categories</option></select>`:""}
+      </div>
+    </div></div>
+
+    <div class="qstep"><span class="qn">3</span><div class="field"><span class="lbl">Your markup (₹, total for the group)</span>
+      <div class="grid2">
+        <div class="field"><label for="mkL">On the logistics package</label><input type="number" id="mkL" min="0" step="100" value="${Q.mkL||""}" placeholder="0"><small>Only for "Logistics package only". Added to every logistics option price.</small></div>
+        <div class="field"><label for="mkP">On the complete package (logistics + hotels)</label><input type="number" id="mkP" min="0" step="100" value="${Q.mkP??""}" placeholder="0"><small>Only for "Complete package". Added to the complete package price.</small></div>
+      </div>
+      <div id="qPrev">${quotePreview()}</div>
+    </div></div>
+
+    <details class="more" ${B.name||B.logo?"":"open"}><summary>Your agency details (optional)</summary>
+      <p class="small">Fill in whatever you want on the quote: agency name, contact, logo and cover photo. They are saved on this computer for next time. Leave them empty and a standard quote still comes out, ready to send to your guest.</p>
+      <div class="grid2">
+        <div class="field"><label for="bName">Agency name</label><input type="text" id="bName" value="${esc(B.name)}"></div>
+        <div class="field"><label for="bPhone">Phone / WhatsApp</label><input type="text" id="bPhone" value="${esc(B.phone)}"></div>
+        <div class="field"><label for="bEmail">Email</label><input type="text" id="bEmail" value="${esc(B.email)}"></div>
+        <div class="field"><label for="bWeb">Website</label><input type="text" id="bWeb" value="${esc(B.web)}"></div>
+        <div class="field"><span class="lbl">Logo</span><div class="imgbox">${B.logo?`<img src="${B.logo}" alt="Your logo"><button type="button" class="link" id="noLogo">Remove</button>`:""}<input type="file" id="bLogo" accept="image/*" aria-label="Upload logo"></div></div>
+        <div class="field"><span class="lbl">Cover photo</span><div class="imgbox"><img class="cov" src="${B.cover||DEFAULT_COVER}" alt="Cover photo">${B.cover?`<button type="button" class="link" id="noCover">Use the default</button>`:""}<input type="file" id="bCover" accept="image/*" aria-label="Upload cover photo"></div></div>
+      </div>
+    </details>
+
+    <details class="more"><summary>Edit inclusions and exclusions, or add your own notes (optional)</summary>
+      <p class="small">One point per line. Leave as it is to use the standard text.</p>
+      <div class="grid2">
+        <div class="field"><label for="tInc">Included</label><textarea id="tInc">${esc((Q.inc ?? incDef.join("\n")))}</textarea></div>
+        <div class="field"><label for="tExc">Not included</label><textarea id="tExc">${esc((Q.exc ?? excDef.join("\n")))}</textarea></div>
+      </div>
+      <div class="field"><label for="tNotes">Your notes or terms (optional)</label><textarea id="tNotes" placeholder="For example your payment terms or cancellation policy. Shown in the quote only if you write something here.">${esc(Q.notes||"")}</textarea></div>
+      <button type="button" class="link" id="resetText">Reset inclusions and exclusions to the standard text</button>
+    </details>
+
+    <div class="btnrow">
+      <button class="btn" type="button" id="mkGuest">Make guest quote PDF</button>
+      <button class="btn sec" type="button" id="cpText">Copy itinerary text</button><span class="copied" id="cpOk" aria-live="polite"></span>
+    </div>
+    <p class="small"><b>Guest quote PDF</b> opens in a new tab; press <b>Save as PDF</b> there. <b>Copy itinerary text</b> copies the day-wise itinerary, your prices, hotels and inclusions as plain text, to paste into WhatsApp, Word or your own software and change as you like.</p>
+  </section>`;
+}
+
+function renderKids(){
+  const box = $("#kids");
+  const html = kids.map((a,i)=>`<div class="kid"><span>Child ${i+1}</span><select data-kid="${i}" aria-label="Age of child ${i+1}">${[2,3,4,5,6,7,8,9,10,11].map(n=>`<option value="${n}" ${n===a?"selected":""}>${n} years</option>`).join("")}</select><button type="button" data-delkid="${i}" aria-label="Remove child ${i+1}">×</button></div>`).join("");
+  if (box.innerHTML !== html) box.innerHTML = html;
+}
+
+/* ---------------- quote text ---------------- */
+function defaultInc(){
+  const it = ITX(planFor);
+  const v = vehicle(it, group());
+  const a = lines(it.inclusions).filter(x=>!/^taxes/i.test(x)).flatMap(x => vehLine(x, v)).concat(extrasInc());
+  const one = Q.opt !== "all" || P(it).options.length === 1;
+  a.splice(v.nLug ? 2 : 1, 0, one ? "Private ferry tickets as per the itinerary" : "Private ferry tickets as per the logistics option chosen");
+  if (Q.mode === "pkg") a.unshift(`Accommodation in the hotels shown, as per the itinerary (${roomsText()}), with daily breakfast (except day 1)`);
+  a.push("Taxes included");
+  return a;
+}
+function defaultExc(){
+  const it = ITX(planFor);
+  return lines(it.exclusions).map(x => /^hotel stay/i.test(x) ? (Q.mode === "pkg" ? "" : "Hotel stay") : x).filter(Boolean);
+}
+function defaultTerms(){
+  const v = `${D.validFrom} – ${D.validTo}`;
+  const sp = planFor >= 0 ? stayPlan(ITX(planFor)) : null;
+  return [sp ? `Prices are for the travel dates shown. Peak surcharges and gala dinners known for these dates are included; final hotel prices are confirmed at booking.` : `Prices are valid from ${v}. Peak dates are quoted separately.`,
+    "Ferry timings and seats depend on the ferry operator and the weather.",
+    "Cab is point to point as per the itinerary and not at disposal.",
+    "Hotels are subject to availability. If a hotel is full, a similar hotel of the same category is offered.",
+    "Hotel peak dates, surcharges and gala dinners follow each hotel's own rules.",
+    "Hotels outside the town area, night trips and extra stops may cost extra."];
+}
+function defaultCanc(){
+  return ["A flat cancellation fee of ₹1,500 per person applies to the cab, tickets and ferries. The remaining amount is refunded.",
+    "Hotel cancellations follow each hotel's own policy; some bookings are not refundable.",
+    "No refund for hotel stays between 15 December and 15 January (some hotels have a longer peak period)."];
+}
+const WHY = ["Your brand, not ours: We are a white-label partner. Our name does not appear on the quote or anywhere on the trip, so your guests travel with you.",
+  "Future referrals stay with you: Because we never show our name, happy guests remember your brand, come back to you, and send their friends and family to you.",
+  "Quick response and sales support: Fast replies on quotes, changes and bookings. Need help closing a booking? We can join a phone call with you and your guest.",
+  "Taken care of on the ground: An expert local team on each island who know how to look after guests, with cab and ferry timings planned for them."];
+
+function quoteText(mode){
+  const it = ITX(planFor), g = group(), v = vehicle(it, g), gt = guestsText(g), sp = stayPlan(it);
+  Q.cab = false; Q.log = true; Q.hot = Q.mode === "pkg";
+  const guest = mode === "guest", mkL = guest && Q.mode === "log" ? (Q.mkL||0) : 0, mkH = guest && Q.mode === "pkg" ? (Q.mkP||0) : 0;   // package total = net + package markup
+  const rt = roomsText();
+  const today = new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+  const L = [];
+  if (Q.cab) L.push(`CAB + TICKETS | Cab and sightseeing tickets, ferries not included | ${inr(priceOf(P(it).cabLevel,g,v) + mkL)}\n- Vehicle: ${v.label}\n- Ferries: not included`);
+  if (Q.log) selOpts(it).forEach(o => { const mk = makruzzPeak(o, g, sp); L.push(`OPTION ${o.no} | ${o.name} | ${inr(priceOf(o,g,v) + mk.amt + mkL)}\n` + o.legs.map(l=>"- "+l).join("\n") + `\n- Vehicle: ${v.label}` + (mk.amt ? "\n- Includes Makruzz peak surcharge" : "")); });
+  const cats = !Q.hot ? [] : (Q.which === "all" ? CATS.filter(c=>D.hotels.some(h=>h.category===c)) : [cat]);
+  const H = cats.map(c => {
+    const hc = hotelTotal(c, it); if (!hc) return "";
+    return `${c} | ${inr(hc.total + mkH)} | ${rt} · ${it.nights} · breakfast\n` + hc.lines.map(l => {
+      const names = guest ? l.h.name : (Q.which === "all" ? hotelsFor(c, l.isl).map(h=>h.name) : [l.h.name]).join(" / ");
+      const head = `- ${islandName(l.isl)} · ${plural(l.n,"night","nights")}: ${names}`;
+      if (guest) return head;                                   // guest quote: no per-island net rates
+      if (R.wm || l.peakAmt || l.galaAmt || l.parts.length > 1) return `${head} |  | ${inr(l.amt)}`;
+      return `${head} | ${inr(l.parts[0].r.room)} | ${inr(l.amt)}` + (R.mt ? ` | ${inr(l.parts[0].r.mattress)}` : "");
+    }).join("\n");
+  }).filter(Boolean);
+  const valid = `${D.validFrom} – ${D.validTo}`;
+  const sec = (h, arr) => arr.length ? `\n${h}\n` + arr.map(x=>"- "+x).join("\n") + "\n" : "";
+  const inc = Q.inc !== null ? lines(Q.inc) : defaultInc();
+  const exc = Q.exc !== null ? lines(Q.exc) : defaultExc();
+  if (Q.cab && !Q.log && !exc.some(x=>/ferry/i.test(x))) exc.unshift("Ferry tickets (book separately)");
+  const terms = guest ? lines(Q.notes||"") : defaultTerms();
+  const canc = guest ? [] : defaultCanc();
+  const hotelNote = guest
+    ? ["Hotel prices are confirmed at the time of booking and may change. Hotels are subject to availability; if a hotel is full, a similar hotel of the same category is offered.",
+       "Children below 5 years usually stay free.", "Peak dates may carry hotel surcharges and gala dinner charges."]
+    : [`Hotel prices are ${seasonWord(hotelTotal(cat, it))} rates for ${rt} for all the nights shown, taxes included, for reference only. Check availability and the final price for your dates with the hotel or with us before taking payment from your guest.`,
+       ...(sp ? ["Peak surcharges and gala dinners known for your dates are included in the hotel totals; please confirm them with the hotel."] : ["Peak surcharges and gala dinners are not included; they depend on your travel dates."]),
+       "Book directly with the hotel to check availability for your dates, or book through us: we email the hotel on your behalf with you in CC.",
+       "Either way, you pay each hotel separately, directly to the hotel, then share the payment screenshot to get the booking confirmation.",
+       "Rooms are subject to availability. If a listed hotel is full, a hotel of the same category will be offered.",
+       "Children below 5 years usually stay free, but please check with the hotel once before booking.",
+       "Some hotels have different peak dates and peak surcharges, so please check the price before booking."];
+  return [
+    `TITLE: ${it.title}`, `ROUTE: ${it.route}`, `STAY: ${it.stay}`, `NIGHTS: ${it.nights}`,
+    `VALID: ${valid}`, ...(sp ? [`TRAVEL DATES: ${fmtY(sp.nights[0].date)} – ${fmtY(sp.depart)}`] : []), `GUESTS: ${gt}`, `SEASON: ${guest ? "Holiday quote" : "B2B Quote"}`, `PREPARED ON: ${today}`, "",
+    guest ? "" : "WHY BOOK WITH US\n" + WHY.map(x=>"- "+x).join("\n") + "\n",
+    "DAY-WISE ITINERARY", planText(true, Q.mode === "log"), "",
+    "LOGISTICS OPTIONS", L.join("\n"), "",
+    H.length ? `HOTELS\n${H.join("\n")}\n` + (guest ? "" : sec("HOTEL BOOKING NOTE", hotelNote)) : "",
+    sec("INCLUDED", inc), sec("NOT INCLUDED", exc), sec("TERMS", terms),
+    sec("LOGISTICS PACKAGE CANCELLATION", canc)
+  ].join("\n");
+}
+
+function selOpts(it){ return P(it).options.filter(o => Q.opt === "all" || String(o.no) === String(Q.opt)); }
+function quoteError(strict){
+  if (strict && Q.mode === "log" && !(Q.mkL > 0) && !(Q.mkP > 0)) return "Please add your markup on the logistics package. This quote goes to your guest, so it needs your price.";
+  if (strict && Q.mode === "pkg" && !(Q.mkP > 0) && !(Q.mkL > 0)) return "Please add your markup on the complete package (logistics + hotels). This quote goes to your guest, so it needs your price.";
+  if (Q.mode === "log" && Q.mkP !== null && Q.mkP > 0) return "You chose Logistics package only, so the complete package markup is not used. Put your markup in \"On the logistics package\", or choose Complete package.";
+  if (Q.mode === "pkg" && Q.which === "all" && Q.opt === "all") return "With all hotel categories, please choose one logistics option (Option 1, 2 or 3), so each category shows one complete package price.";
+  if (Q.mode === "pkg" && (Q.mkL||0) > 0) return "You chose Complete package, so put your markup only in \"On the complete package (logistics + hotels)\". Please clear the logistics markup.";
+  return "";
+}
+function quotePreview(){
+  if (!D || planFor < 0) return "";
+  const it = ITX(planFor), g = group(), v = vehicle(it, g), sp = stayPlan(it);
+  if (v.add === null) return "";
+  const mkL = Q.mkL||0, mkP = Q.mkP || 0, err = quoteError();
+  const rows = [];
+  selOpts(it).forEach(o => { const t = priceOf(o,g,v) + makruzzPeak(o,g,sp).amt;
+    if (Q.mode === "log") rows.push(`Logistics Option ${o.no}: <b>${inr(t + mkL)}</b> <span class="small">(our price ${inr(t)} + your markup ${inr(mkL)})</span>`);
+    else { const cs = Q.which === "all" ? CATS.filter(c=>D.hotels.some(h=>h.category===c)) : [cat];
+      cs.forEach(c => { const hc = hotelTotal(c, it); if (hc) rows.push(`${nice(c)} hotels + Option ${o.no}: <b>${inr(t + hc.total + mkP)}</b> <span class="small">(our price ${inr(t + hc.total)} + your markup ${inr(mkP)})</span><br><span class="small">Hotels: ${hc.lines.map(l => esc(l.h.name)).join(", ")}</span>`); }); } });
+  const hint = Q.mode === "pkg" ? `<p class="small" style="margin:8px 0 0">Each category uses the hotel selected on each island in the Hotels section above (the cheapest one, unless you change it). To change a category's hotels, click that category in the Hotels section and pick the hotels. The quote shows each hotel as "or similar".</p>` : "";
+  return (err ? `<div class="qerr">${esc(err)}</div>` : "") + hint + `<div class="qprev"><b>Your guest will see (total for ${esc(guestsText(g))}):</b><ul>${rows.map(r=>`<li>${r}</li>`).join("")}</ul></div>`;
+}
+function markBad(){
+  const id = Q.mode === "pkg" ? ((Q.mkL||0) > 0 ? "mkL" : "mkP") : ((Q.mkP||0) > 0 ? "mkP" : "mkL");
+  const el = $("#" + id); if (el){ el.classList.add("bad"); el.focus(); }
+}
+function refreshPreview(){ const b = $("#qPrev"); if (b) b.innerHTML = quotePreview(); }
+function guestPlainText(){
+  const it = ITX(planFor), g = group(), v = vehicle(it, g), sp = stayPlan(it), gt = guestsText(g);
+  const mkL = Q.mode === "log" ? (Q.mkL||0) : 0, mkP = Q.mkP || 0;
+  Q.cab = false; Q.log = true; Q.hot = Q.mode === "pkg";
+  const opts = selOpts(it).map(o => ({o, t: priceOf(o,g,v) + makruzzPeak(o,g,sp).amt}));
+  const out = [it.title.toUpperCase(), it.route];
+  if (sp) out.push(`Travel dates: ${fmtY(sp.nights[0].date)} – ${fmtY(sp.depart)}`);
+  out.push(`Guests: ${gt}`, `Stay: ${it.stay} (${it.nights})`, "", "DAY-WISE ITINERARY", planText(true, Q.mode === "log"), "");
+  if (Q.mode === "log"){
+    out.push(`LOGISTICS PACKAGE (total for ${gt}, taxes included; hotels not included)`);
+    opts.forEach(({o,t}) => out.push(`${opts.length > 1 ? "Option " + o.no + ": " : "Price: "}${inr(t + mkL)}`, "Ferries:", ...o.legs.map(l => "   " + l)));
+  } else {
+    const cats = Q.which === "all" ? CATS.filter(c=>D.hotels.some(h=>h.category===c)) : [cat];
+    const many = cats.length * opts.length > 1;
+    cats.forEach(c => { const hc = hotelTotal(c, it); if (!hc) return;
+      opts.forEach(({o,t}) => {
+        out.push(`COMPLETE TOUR PACKAGE${cats.length > 1 ? " · " + nice(c) + " hotels" : ""}${opts.length > 1 ? " · Option " + o.no : ""}`,
+          `Price: ${inr(t + hc.total + mkP)} (total for ${gt}, taxes included)`, `Hotels (${roomsText()}, breakfast):`,
+          ...hc.lines.map(l => `   ${islandName(l.isl)}, ${plural(l.n,"night","nights")}: ${l.h.name} or similar`),
+          "Ferries:", ...o.legs.map(l => "   " + l), ""); });
+    });
+    if (many) out.push("");
+  }
+  const sec = (h, arr) => { if (arr.length) out.push("", h, ...arr.map(x => "- " + x)); };
+  sec("INCLUDED", Q.inc !== null ? lines(Q.inc) : defaultInc());
+  sec("NOT INCLUDED", Q.exc !== null ? lines(Q.exc) : defaultExc());
+  sec("NOTES", lines(Q.notes||""));
+  return out.join("\n");
+}
+function copyText(){
+  const qe = quoteError(true); if (qe){ alertBox(qe); markBad(); return; }
+  const t = guestPlainText(), ok = () => { $("#cpOk").textContent = "Copied. Paste it anywhere."; };
+  const fallback = () => { const a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); ok(); } catch(e){ alertBox("Could not copy. Please try again."); } a.remove(); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, fallback); else fallback();
+}
+function makePdf(mode){
+  const qe = quoteError(true); if (qe){ alertBox(qe); markBad(); return; }
+  const rc = roomCheck(group());
+  if (Q.mode === "pkg" && rc && rc.bad){ alertBox("Please fix the hotel rooms first: " + rc.msg); document.querySelector(".roomsbox")?.scrollIntoView({behavior:"smooth", block:"center"}); return; }
+  const text = quoteText(mode);
+  const agent = mode === "guest" ? {mode:"guest", name:B.name, phone:B.phone, email:B.email, web:B.web, logo:B.logo, cover:B.cover || DEFAULT_COVER} : {mode:"agent"};
+  const html = BUILDER_HTML
+    .replace(/const SAMPLE_TEXT = "[\s\S]*?";\n/, () => "const SAMPLE_TEXT = " + JSON.stringify(text) + ";\nwindow.AGENT = " + JSON.stringify(agent) + ";\n")
+    .replace("</style>", ".tools .btns #sample,.tools .btns #render,.tools #code,.tools .whypos:has(#whypos){display:none}</style>")
+    .replace("Paste the B2B quote from Claude here, press Show quote, then Save as PDF.", "Your quote is ready. Choose the PDF size, then press Save as PDF.");
+  const url = URL.createObjectURL(new Blob([html], {type:"text/html"}));
+  let w = null; try { w = window.open(url, "_blank"); } catch(e){}
+  if (!w) showQuoteHere(url);   // new tab blocked: open the quote on this page instead
+}
+function showQuoteHere(url){
+  let o = $("#qOverlay");
+  if (!o){ o = document.createElement("div"); o.id = "qOverlay";
+    o.innerHTML = `<div class="qo-bar"><button type="button" class="btn" id="qoPrint">Save as PDF</button><button type="button" class="btn sec" id="qoClose">Back to the calculator</button></div><iframe title="Your quote"></iframe>`;
+    document.body.appendChild(o); }
+  o.querySelector("iframe").src = url; o.style.display = "flex"; document.body.style.overflow = "hidden";
+}
+function alertBox(msg){
+  let b = $("#msg"); const host = $("#quoteCard") || $("#main");
+  if (!b){ b = document.createElement("div"); b.id = "msg"; b.className = "warn"; b.style.marginTop = "10px"; host.appendChild(b); }
+  b.textContent = msg;
+}
+/** cut away empty white / transparent margins around a logo, so it fills its space in the PDF */
+function trimLogo(src, cb){
+  const im = new Image();
+  im.onload = () => {
+    try{
+      const w = im.width, h = im.height, c = document.createElement("canvas"); c.width = w; c.height = h;
+      const x = c.getContext("2d"); x.drawImage(im, 0, 0); const d = x.getImageData(0, 0, w, h).data;
+      const empty = i => d[i+3] < 16 || (d[i] > 240 && d[i+1] > 240 && d[i+2] > 240);
+      let t = h, l = w, r = -1, b = -1;
+      for (let y = 0; y < h; y++) for (let xx = 0; xx < w; xx++) if (!empty((y*w + xx)*4)){ if (y < t) t = y; if (y > b) b = y; if (xx < l) l = xx; if (xx > r) r = xx; }
+      if (r < 0 || (l <= 2 && t <= 2 && r >= w-3 && b >= h-3)) return cb(src);
+      const pad = Math.round(Math.max(r-l, b-t) * 0.04), L0 = Math.max(0, l-pad), T0 = Math.max(0, t-pad), W0 = Math.min(w, r+pad+1) - L0, H0 = Math.min(h, b+pad+1) - T0;
+      const o = document.createElement("canvas"); o.width = W0; o.height = H0;
+      o.getContext("2d").drawImage(c, L0, T0, W0, H0, 0, 0, W0, H0);
+      cb(o.toDataURL("image/png"));
+    }catch(e){ cb(src); }
+  };
+  im.onerror = () => cb(src); im.src = src;
+}
+function readImg(file, maxW, cb){
+  const r = new FileReader();
+  r.onload = () => { const im = new Image(); im.onload = () => {
+    const s = Math.min(1, maxW / im.width), c = document.createElement("canvas");
+    c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
+    c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+    cb(c.toDataURL(file.type === "image/png" ? "image/png" : "image/jpeg", .85)); }; im.src = r.result; };
+  r.readAsDataURL(file);
+}
+function flashSummary(){ const s = $("#sumBar"); if (s){ s.classList.remove("flash"); void s.offsetWidth; s.classList.add("flash"); } }
+
+/* ---------------- events ---------------- */
+document.addEventListener("click", e => {
+  if (e.target.id === "refresh"){ load(true); return; }
+  if (e.target.id === "retry"){ load(); return; }
+  const xl = e.target.closest && e.target.closest("[data-xl]");
+  if (xl){ xLug = Math.max(0, xLug + (+xl.dataset.xl)); update(); flashSummary(); return; }
+  const t = e.target;
+  const s = t.closest(".step button");
+  if (s){
+    const box = s.closest(".step"), inp = box.querySelector("input");
+    const min = (box.dataset.k === "ad" || box.dataset.k === "rm") ? 1 : 0;
+    inp.value = Math.max(min, (parseInt(inp.value,10)||0) + (+s.dataset.d));
+    if (["rm","mt","wm"].includes(box.dataset.k)){ R[box.dataset.k] = +inp.value; manualRooms = true; }
+    update(); flashSummary(); return;
+  }
+  if (t.id === "addKid"){ kids.push(5); update(); flashSummary(); return; }
+  if (t.dataset.delkid !== undefined){ kids.splice(+t.dataset.delkid, 1); update(); flashSummary(); return; }
+  const ro = t.closest(".ropt"); if (ro){ const [a,b,c] = ro.dataset.rooms.split(":").map(Number); R.rm = a; R.mt = b; R.wm = c||0; manualRooms = true; update(); flashSummary(); return; }
+  if (t.id === "autoRoomsBtn"){ manualRooms = false; update(); return; }
+  const c = t.closest(".cats button"); if (c){ cat = c.dataset.cat; update(); return; }
+  if (t.dataset.rm){ const [i,j] = t.dataset.rm.split(":").map(Number), txt = plan[i].items[j];
+    const k = extras.findIndex(e => e.day === i && e.lines.includes(txt));
+    if (k >= 0){ const ex = extras[k]; plan[i].items = plan[i].items.filter(x => !ex.lines.includes(x)); extras.splice(k,1); }
+    else plan[i].items.splice(j,1);
+    update(); flashSummary(); return; }
+  if (t.dataset.addcx !== undefined){ const i = +t.dataset.addcx, nm = ($("#cxName").value||"").trim(); if (!nm) { $("#cxName").focus(); return; }
+    if (addOpen.type === "custom"){ const c = Math.max(0, parseFloat($("#cxCost").value) || 0), n = ++exSeq; extras.push({day:i, kind:"custom", name:nm, cost:c, lines:[tagLine(nm, n)]}); addLines(i, [tagLine(nm, n)]); }
+    else addLines(i, [nm]); addOpen = null; update(); flashSummary(); return; }
+  if (t.id === "editToggle"){ editMode = !editMode; update(); return; }
+  if (t.id === "resetPlan"){ planFor = -1; extras = []; update(); flashSummary(); return; }
+  if (t.id === "noLogo"){ B.logo = ""; saveBrand(); update(); return; }
+  if (t.id === "noCover"){ B.cover = ""; saveBrand(); update(); return; }
+  if (t.id === "resetText"){ Q.inc = Q.exc = null; update(); return; }
+  if (t.id === "mkGuest") makePdf("guest");
+  if (t.id === "cpText") copyText();
+  if (t.id === "qoClose"){ $("#qOverlay").style.display = "none"; document.body.style.overflow = ""; }
+  if (t.id === "qoPrint"){ try { $("#qOverlay iframe").contentWindow.print(); } catch(e){ alertBox("Press Ctrl + P (or Cmd + P on Mac) to save as PDF."); } }
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && D && !window.DEMO_FEED && loadedAt && Date.now() - loadedAt > 30*60*1000) load(true);
+});
+document.addEventListener("submit", e => {
+  if (e.target.id !== "codeForm") return; e.preventDefault();
+  const c = ($("#codeIn").value || "").trim(); if (!c) return;
+  setCode(c); load();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && (e.target.id === "cxName" || e.target.id === "cxCost")){ e.preventDefault(); const b = document.querySelector("[data-addcx]"); if (b) b.click(); return; }
+  if (e.key === "Enter" && e.target.dataset && e.target.dataset.ai !== undefined){ e.preventDefault(); document.querySelector(`[data-addday="${e.target.dataset.ai}"]`).click(); }
+});
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.dataset.dt !== undefined){ plan[+t.dataset.dt].title = t.value; return; }
+  if (t.id === "mkL" || t.id === "mkP"){ $("#mkL").classList.remove("bad"); $("#mkP").classList.remove("bad"); const m = $("#msg"); if (m) m.remove(); }
+  if (t.id === "mkL"){ Q.mkL = Math.max(0, parseFloat(t.value) || 0); refreshPreview(); return; }
+  if (t.id === "mkP"){ Q.mkP = t.value === "" ? null : Math.max(0, parseFloat(t.value) || 0); refreshPreview(); return; }
+  const tx = {tInc:"inc", tExc:"exc", tNotes:"notes"}; if (tx[t.id]){ Q[tx[t.id]] = t.value; return; }
+  const br = {bName:"name", bPhone:"phone", bEmail:"email", bWeb:"web"}; if (br[t.id]){ B[br[t.id]] = t.value; saveBrand(); }
+});
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t.dataset.dt !== undefined){ update(); return; }
+  if (t.dataset.hk !== undefined){ sel[t.dataset.hk] = +t.value; update(); return; }
+  if (t.dataset.kid !== undefined){ kids[+t.dataset.kid] = +t.value; update(); flashSummary(); return; }
+  if (t.dataset.add !== undefined){ t.checked ? addSel.add(+t.dataset.add) : addSel.delete(+t.dataset.add); return; }
+  if (t.name === "veh"){ veh = t.value; update(); flashSummary(); return; }
+  if (t.dataset.sp !== undefined){ const i = +t.dataset.sp, v = t.value; t.value = "";
+    if (v === "custom" || v === "text"){ addOpen = {day:i, type:v}; update(); setTimeout(()=>{ const n = $("#cxName"); if (n) n.focus(); }, 0); return; }
+    if (v !== ""){ const st = D.stops[+v]; const ls = st.lines.length ? st.lines.slice() : [st.name];
+      const n = ++exSeq, tl = ls.map(x => tagLine(sdLine(i, x), n)).filter(x => clean(x).trim()); extras.push({day:i, kind:"stop", idx:+v, lines:tl}); addLines(i, tl); addOpen = null; update(); flashSummary(); }
+    return; }
+  if (t.id === "sameDay"){ sameDay = t.checked; planFor = -1; update(); flashSummary(); return; }
+  if (t.name === "qmode"){ Q.mode = t.value; update(); return; }
+  if (t.id === "qOpt"){ Q.opt = t.value; if (Q.inc === null) update(); else refreshPreview(); return; }
+  if (t.id === "qWhich"){ Q.which = t.value; if (Q.which === "all" && Q.opt === "all"){ Q.opt = String(P(ITX(planFor)).options[0].no); update(); } else refreshPreview(); return; }
+  if (t.id === "bLogo" && t.files[0]){ readImg(t.files[0], 700, d => trimLogo(d, d2 => { B.logo = d2; B.logoTrim = 1; saveBrand(); update(); })); return; }
+  if (t.id === "bCover" && t.files[0]){ readImg(t.files[0], 1400, d => { B.cover = d; saveBrand(); update(); }); return; }
+  if (t.id === "it"){ planFor = -1; veh = ""; sameDay = false; update(); return; }
+  if (t.id === "arr"){ update(); flashSummary(); return; }
+  if (["ad","c0"].includes(t.id)){ update(); flashSummary(); return; }
+  if (["rm","mt","wm"].includes(t.id)){ R[t.id] = Math.max(t.id==="rm"?1:0, parseInt(t.value,10)||0); manualRooms = true; update(); flashSummary(); }
+});
+load();
+</script>
+</body>
+</html>
