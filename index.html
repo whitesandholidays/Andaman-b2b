@@ -201,6 +201,10 @@ details.more summary{cursor:pointer;font-weight:700;color:var(--lagoon);padding:
 @media (max-width:620px){.helpbar{margin:10px 16px 0}}
 h1 .by{font-weight:500;font-size:.62em;opacity:.85;white-space:nowrap}
 .hide{display:none!important}
+/* mobile fit */
+.main{grid-template-columns:minmax(0,1fr)}
+.main>*,.card *{min-width:0}
+select,input,textarea{max-width:100%}
 </style>
 </head>
 <body>
